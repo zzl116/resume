@@ -1,0 +1,1134 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>周文璐 | AI运营 · 个人简历</title>
+<style>
+/* ============ CSS Reset & Variables ============ */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#f8f9fb;
+  --surface:#ffffff;
+  --surface-alt:#f1f3f7;
+  --text:#1e1e2e;
+  --text-secondary:#5a5d6e;
+  --text-muted:#8b8fa3;
+  --accent:#5b5fef;
+  --accent-light:#eef0ff;
+  --accent-dark:#4845d6;
+  --gold:#c8a05a;
+  --gold-light:#fdf6ed;
+  --border:#e8eaf0;
+  --shadow-sm:0 1px 3px rgba(0,0,0,.06),0 1px 2px rgba(0,0,0,.04);
+  --shadow:0 4px 16px rgba(0,0,0,.06),0 2px 6px rgba(0,0,0,.04);
+  --shadow-lg:0 12px 40px rgba(0,0,0,.08),0 4px 12px rgba(0,0,0,.04);
+  --radius:12px;
+  --radius-sm:8px;
+  --transition:0.25s cubic-bezier(.4,0,.2,1);
+  --font:"PingFang SC","Hiragino Sans GB","Microsoft YaHei","Noto Sans SC",-apple-system,sans-serif;
+  --font-mono:"SF Mono","Cascadia Code","Consolas",monospace;
+}
+::selection{background:var(--accent-light);color:var(--accent-dark)}
+html{scroll-behavior:smooth;scroll-padding-top:80px}
+body{
+  font-family:var(--font);
+  background:var(--bg);
+  color:var(--text);
+  line-height:1.7;
+  -webkit-font-smoothing:antialiased;
+  overflow-x:hidden;
+}
+
+/* ============ Navigation ============ */
+.nav{
+  position:fixed;top:0;left:0;right:0;z-index:100;
+  background:rgba(255,255,255,.85);backdrop-filter:blur(16px);
+  border-bottom:1px solid var(--border);
+  transition:var(--transition);
+  padding:0 24px;
+}
+.nav-inner{
+  max-width:1100px;margin:0 auto;
+  display:flex;align-items:center;justify-content:space-between;
+  height:56px;
+}
+.nav-logo{font-weight:700;font-size:1.1rem;color:var(--text);letter-spacing:-0.3px}
+.nav-links{display:flex;gap:4px;list-style:none}
+.nav-links a{
+  text-decoration:none;color:var(--text-secondary);
+  padding:6px 14px;border-radius:20px;font-size:.88rem;
+  transition:var(--transition);font-weight:500;
+}
+.nav-links a:hover{color:var(--accent);background:var(--accent-light)}
+
+/* ============ Hero ============ */
+.hero{
+  padding:120px 24px 80px;
+  background:linear-gradient(160deg,#1a1a30 0%,#1e2040 30%,#1a1a35 60%,#222240 100%);
+  color:#fff;position:relative;overflow:hidden;
+}
+.hero::before{
+  content:'';position:absolute;top:-50%;right:-20%;
+  width:600px;height:600px;
+  background:radial-gradient(circle,rgba(91,95,239,.25),transparent 70%);
+  border-radius:50%;
+}
+.hero::after{
+  content:'';position:absolute;bottom:-30%;left:-10%;
+  width:400px;height:400px;
+  background:radial-gradient(circle,rgba(200,160,90,.12),transparent 70%);
+  border-radius:50%;
+}
+.hero-inner{
+  max-width:1100px;margin:0 auto;position:relative;z-index:1;
+  display:flex;align-items:center;gap:56px;flex-wrap:wrap;
+}
+.hero-avatar-wrap{
+  flex-shrink:0;position:relative;
+  width:180px;height:180px;
+}
+.hero-avatar{
+  width:180px;height:180px;border-radius:50%;
+  object-fit:cover;border:3px solid rgba(255,255,255,.2);
+  background:rgba(255,255,255,.08);
+  transition:var(--transition);
+  display:flex;align-items:center;justify-content:center;
+  overflow:hidden;
+}
+.hero-avatar img{width:100%;height:100%;object-fit:cover}
+.hero-avatar-placeholder{
+  font-size:3.5rem;color:rgba(255,255,255,.25);
+}
+.hero-avatar-upload{
+  position:absolute;bottom:4px;right:4px;
+  width:38px;height:38px;border-radius:50%;
+  background:var(--accent);border:2px solid #1a1a30;
+  color:#fff;font-size:1.1rem;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;
+  transition:var(--transition);line-height:1;
+}
+.hero-avatar-upload:hover{background:var(--accent-dark);transform:scale(1.08)}
+.hero-info{flex:1;min-width:280px}
+.hero-name{font-size:2.6rem;font-weight:800;letter-spacing:-1px;margin-bottom:4px}
+.hero-title{
+  font-size:1.15rem;color:rgba(255,255,255,.7);font-weight:500;
+  margin-bottom:16px;display:flex;align-items:center;gap:12px;flex-wrap:wrap;
+}
+.hero-badges{display:flex;gap:10px;flex-wrap:wrap}
+.hero-badge{
+  background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.15);
+  padding:5px 14px;border-radius:20px;font-size:.82rem;
+  color:rgba(255,255,255,.85);backdrop-filter:blur(4px);
+  display:flex;align-items:center;gap:6px;
+}
+.hero-contact{
+  display:flex;gap:16px;flex-wrap:wrap;margin-top:14px;
+  font-size:.9rem;color:rgba(255,255,255,.6);
+}
+.hero-contact span{display:flex;align-items:center;gap:5px}
+
+/* ============ Section Common ============ */
+.section{padding:72px 24px}
+.section-inner{max-width:1100px;margin:0 auto}
+.section-label{
+  font-size:.8rem;font-weight:700;text-transform:uppercase;
+  letter-spacing:2px;color:var(--accent);margin-bottom:8px;
+}
+.section-title{font-size:2rem;font-weight:800;letter-spacing:-0.5px;margin-bottom:40px}
+.section-alt{background:var(--surface-alt)}
+
+/* ============ Advantage Cards ============ */
+.advantage-grid{
+  display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));
+  gap:20px;
+}
+.advantage-card{
+  background:var(--surface);border-radius:var(--radius);
+  padding:28px 24px;box-shadow:var(--shadow-sm);border:1px solid var(--border);
+  transition:var(--transition);position:relative;overflow:hidden;
+}
+.advantage-card::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:3px;
+  background:linear-gradient(90deg,var(--accent),#8b8fff);
+  transform:scaleX(0);transition:transform .4s ease;
+}
+.advantage-card:hover::before{transform:scaleX(1)}
+.advantage-card:hover{box-shadow:var(--shadow);transform:translateY(-2px)}
+.advantage-icon{
+  width:44px;height:44px;border-radius:var(--radius-sm);
+  background:var(--accent-light);color:var(--accent);
+  display:flex;align-items:center;justify-content:center;
+  font-size:1.3rem;margin-bottom:14px;
+}
+.advantage-card h3{font-size:1rem;margin-bottom:6px;font-weight:700}
+.advantage-card p{font-size:.88rem;color:var(--text-secondary);line-height:1.6}
+
+/* ============ Timeline (Work Experience) ============ */
+.timeline{position:relative;padding-left:0}
+.timeline::before{
+  content:'';position:absolute;left:19px;top:8px;bottom:8px;
+  width:2px;background:var(--border);
+}
+.timeline-item{
+  position:relative;padding-left:52px;margin-bottom:36px;
+}
+.timeline-item:last-child{margin-bottom:0}
+.timeline-dot{
+  position:absolute;left:11px;top:6px;
+  width:18px;height:18px;border-radius:50%;
+  background:var(--accent);border:3px solid var(--accent-light);
+  z-index:1;transition:var(--transition);
+}
+.timeline-item:hover .timeline-dot{transform:scale(1.2)}
+.timeline-card{
+  background:var(--surface);border-radius:var(--radius);
+  padding:28px;box-shadow:var(--shadow-sm);border:1px solid var(--border);
+  transition:var(--transition);position:relative;
+}
+.timeline-card:hover{box-shadow:var(--shadow)}
+.timeline-header{
+  display:flex;justify-content:space-between;align-items:flex-start;
+  flex-wrap:wrap;gap:8px;margin-bottom:10px;
+}
+.timeline-company{font-weight:700;font-size:1.08rem}
+.timeline-date{
+  font-size:.82rem;color:var(--text-muted);white-space:nowrap;
+  background:var(--surface-alt);padding:3px 10px;border-radius:12px;
+}
+.timeline-role{font-size:.9rem;color:var(--accent);font-weight:600;margin-bottom:8px}
+.timeline-details{list-style:none}
+.timeline-details li{
+  font-size:.88rem;color:var(--text-secondary);padding:3px 0;
+  padding-left:18px;position:relative;line-height:1.65;
+}
+.timeline-details li::before{
+  content:'';position:absolute;left:0;top:12px;
+  width:5px;height:5px;border-radius:50%;background:var(--border);
+}
+.reason-toggle{
+  display:inline-flex;align-items:center;gap:5px;
+  margin-top:12px;padding:6px 14px;
+  border-radius:18px;border:1px solid var(--border);
+  background:var(--surface-alt);color:var(--text-muted);
+  font-size:.8rem;cursor:pointer;transition:var(--transition);
+  font-family:var(--font);
+}
+.reason-toggle:hover{
+  border-color:var(--accent);color:var(--accent);
+  background:var(--accent-light);
+}
+.reason-toggle .arrow{transition:transform .3s ease;font-size:.7rem}
+.reason-toggle.open .arrow{transform:rotate(180deg)}
+.reason-content{
+  margin-top:10px;padding:14px 18px;
+  background:var(--gold-light);border-radius:var(--radius-sm);
+  border-left:3px solid var(--gold);
+  font-size:.84rem;color:#8b6914;line-height:1.6;
+  display:none;animation:fadeSlide .3s ease;
+}
+.reason-content.show{display:block}
+
+/* ============ Add / Remove Buttons ============ */
+.action-bar{display:flex;gap:10px;margin-top:24px;flex-wrap:wrap}
+.btn{
+  display:inline-flex;align-items:center;gap:6px;
+  padding:10px 20px;border-radius:24px;font-size:.88rem;font-weight:600;
+  cursor:pointer;transition:var(--transition);border:none;
+  font-family:var(--font);text-decoration:none;
+}
+.btn-primary{background:var(--accent);color:#fff}
+.btn-primary:hover{background:var(--accent-dark);box-shadow:0 4px 14px rgba(91,95,239,.3)}
+.btn-outline{background:transparent;border:1.5px solid var(--border);color:var(--text-secondary)}
+.btn-outline:hover{border-color:var(--accent);color:var(--accent)}
+.btn-ghost{background:transparent;color:var(--text-muted);padding:6px 10px;font-size:.82rem}
+.btn-ghost:hover{color:#e55;background:#fff0f0}
+.btn-sm{padding:6px 14px;font-size:.8rem}
+.delete-btn{
+  position:absolute;top:12px;right:12px;
+  width:28px;height:28px;border-radius:50%;
+  border:none;background:transparent;color:var(--text-muted);
+  cursor:pointer;font-size:1rem;transition:var(--transition);
+  display:flex;align-items:center;justify-content:center;
+  opacity:0;
+}
+.timeline-card:hover .delete-btn,
+.project-card:hover .delete-btn{opacity:1}
+.delete-btn:hover{background:#fee2e2;color:#e55}
+
+/* ============ Projects ============ */
+.project-grid{
+  display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));
+  gap:20px;
+}
+.project-card{
+  background:var(--surface);border-radius:var(--radius);
+  padding:28px;box-shadow:var(--shadow-sm);border:1px solid var(--border);
+  transition:var(--transition);position:relative;
+}
+.project-card:hover{box-shadow:var(--shadow);transform:translateY(-2px)}
+.project-card h3{font-size:1.05rem;margin-bottom:8px}
+.project-card p{font-size:.86rem;color:var(--text-secondary);line-height:1.6}
+.project-tag{
+  display:inline-block;padding:3px 10px;border-radius:12px;
+  font-size:.75rem;font-weight:600;margin-top:10px;
+  background:var(--accent-light);color:var(--accent);
+}
+
+/* ============ Portfolio ============ */
+.portfolio-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:16px}
+.portfolio-item{
+  aspect-ratio:1;border-radius:var(--radius);overflow:hidden;
+  position:relative;background:var(--surface-alt);
+  border:1px solid var(--border);cursor:pointer;transition:var(--transition);
+}
+.portfolio-item:hover{box-shadow:var(--shadow-lg);transform:translateY(-3px)}
+.portfolio-item img{width:100%;height:100%;object-fit:cover}
+.portfolio-item-overlay{
+  position:absolute;inset:0;background:rgba(0,0,0,.5);
+  display:flex;align-items:center;justify-content:center;
+  color:#fff;font-size:.82rem;opacity:0;transition:var(--transition);
+  font-weight:600;
+}
+.portfolio-item:hover .portfolio-item-overlay{opacity:1}
+.portfolio-add{
+  aspect-ratio:1;border-radius:var(--radius);
+  border:2px dashed var(--border);display:flex;
+  flex-direction:column;align-items:center;justify-content:center;
+  gap:8px;color:var(--text-muted);cursor:pointer;
+  transition:var(--transition);font-size:.85rem;
+}
+.portfolio-add:hover{border-color:var(--accent);color:var(--accent);background:var(--accent-light)}
+.portfolio-add-icon{font-size:2rem}
+
+/* ============ Education ============ */
+.edu-card{
+  background:var(--surface);border-radius:var(--radius);
+  padding:28px;box-shadow:var(--shadow-sm);border:1px solid var(--border);
+  display:flex;gap:20px;align-items:center;flex-wrap:wrap;
+}
+.edu-icon{
+  width:52px;height:52px;border-radius:var(--radius-sm);
+  background:var(--gold-light);color:var(--gold);
+  display:flex;align-items:center;justify-content:center;
+  font-size:1.4rem;flex-shrink:0;
+}
+.edu-info h3{font-size:1.05rem;margin-bottom:2px}
+.edu-info p{font-size:.88rem;color:var(--text-secondary)}
+
+/* ============ Skills ============ */
+.skill-groups{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:24px}
+.skill-group h3{font-size:.95rem;font-weight:700;margin-bottom:12px;display:flex;align-items:center;gap:8px}
+.skill-group h3 .icon{font-size:1.1rem}
+.skill-tags{display:flex;flex-wrap:wrap;gap:8px}
+.skill-tag{
+  padding:6px 14px;border-radius:20px;font-size:.82rem;
+  background:var(--surface);border:1px solid var(--border);
+  color:var(--text-secondary);transition:var(--transition);
+}
+.skill-tag:hover{border-color:var(--accent);color:var(--accent);background:var(--accent-light)}
+.skill-tag.highlight{background:var(--accent-light);color:var(--accent);border-color:var(--accent);font-weight:600}
+
+/* ============ Footer ============ */
+.footer{
+  text-align:center;padding:40px 24px;
+  color:var(--text-muted);font-size:.82rem;
+  border-top:1px solid var(--border);
+}
+
+/* ============ Modal ============ */
+.modal-overlay{
+  position:fixed;inset:0;z-index:200;
+  background:rgba(0,0,0,.5);backdrop-filter:blur(4px);
+  display:flex;align-items:center;justify-content:center;
+  opacity:0;pointer-events:none;transition:opacity .3s ease;
+  padding:24px;
+}
+.modal-overlay.show{opacity:1;pointer-events:auto}
+.modal{
+  background:var(--surface);border-radius:var(--radius);
+  padding:36px;max-width:520px;width:100%;
+  box-shadow:var(--shadow-lg);
+  max-height:85vh;overflow-y:auto;
+  transform:translateY(16px);transition:transform .3s ease;
+}
+.modal-overlay.show .modal{transform:translateY(0)}
+.modal h3{font-size:1.3rem;margin-bottom:20px}
+.modal-close{
+  position:absolute;top:16px;right:16px;
+  width:32px;height:32px;border-radius:50%;
+  border:none;background:var(--surface-alt);cursor:pointer;
+  font-size:1.1rem;color:var(--text-muted);transition:var(--transition);
+}
+.modal-close:hover{background:#fee2e2;color:#e55}
+.form-group{margin-bottom:16px}
+.form-group label{display:block;font-size:.84rem;font-weight:600;margin-bottom:5px;color:var(--text-secondary)}
+.form-group input,.form-group textarea,.form-group select{
+  width:100%;padding:10px 14px;border-radius:var(--radius-sm);
+  border:1.5px solid var(--border);font-family:var(--font);
+  font-size:.88rem;transition:var(--transition);background:var(--surface-alt);
+  color:var(--text);resize:vertical;
+}
+.form-group input:focus,.form-group textarea:focus,.form-group select:focus{
+  outline:none;border-color:var(--accent);box-shadow:0 0 0 3px rgba(91,95,239,.1);
+  background:var(--surface);
+}
+.form-group textarea{min-height:80px}
+.form-actions{display:flex;gap:10px;justify-content:flex-end;margin-top:20px}
+
+/* ============ Toast ============ */
+.toast{
+  position:fixed;bottom:40px;left:50%;transform:translateX(-50%) translateY(100px);
+  background:#1e1e2e;color:#fff;padding:12px 24px;border-radius:24px;
+  font-size:.88rem;z-index:300;transition:transform .35s cubic-bezier(.4,0,.2,1);
+  box-shadow:0 8px 30px rgba(0,0,0,.2);
+}
+.toast.show{transform:translateX(-50%) translateY(0)}
+
+/* ============ Animations ============ */
+@keyframes fadeSlide{
+  from{opacity:0;transform:translateY(-8px)}
+  to{opacity:1;transform:translateY(0)}
+}
+@keyframes fadeInUp{
+  from{opacity:0;transform:translateY(24px)}
+  to{opacity:1;transform:translateY(0)}
+}
+.reveal{opacity:0;transform:translateY(24px);transition:opacity .6s ease,transform .6s ease}
+.reveal.visible{opacity:1;transform:translateY(0)}
+
+/* ============ Edit mode indicator ============ */
+.edit-badge{
+  position:fixed;bottom:24px;right:24px;z-index:50;
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:24px;padding:8px 16px;font-size:.8rem;
+  box-shadow:var(--shadow);cursor:pointer;transition:var(--transition);
+  display:flex;align-items:center;gap:6px;font-weight:600;
+  color:var(--text-secondary);
+}
+.edit-badge:hover{box-shadow:var(--shadow-lg);color:var(--accent)}
+.edit-badge.active{background:var(--accent);color:#fff;border-color:var(--accent)}
+
+/* ============ Responsive ============ */
+@media(max-width:768px){
+  .hero{padding:96px 20px 56px}
+  .hero-inner{flex-direction:column;text-align:center;gap:28px}
+  .hero-avatar-wrap{width:140px;height:140px}
+  .hero-avatar{width:140px;height:140px}
+  .hero-name{font-size:2rem}
+  .hero-badges,.hero-contact{justify-content:center}
+  .section{padding:48px 20px}
+  .section-title{font-size:1.5rem}
+  .nav-links{display:none}
+  .timeline-header{flex-direction:column}
+  .timeline-item{padding-left:40px}
+  .project-grid{grid-template-columns:1fr}
+}
+@media print{
+  .nav,.footer,.edit-badge,.btn,.delete-btn,.reason-toggle,
+  .hero-avatar-upload,.portfolio-add,.action-bar{display:none!important}
+  .hero{background:#fff!important;color:#000!important;padding:20px 0}
+  .hero-name,.hero-title,.hero-contact{color:#000!important}
+  .hero-badge{color:#000!important;border-color:#ccc!important}
+  .section{padding:20px 0;page-break-inside:avoid}
+  .timeline-card,.advantage-card,.project-card{box-shadow:none;border:1px solid #ddd}
+}
+</style>
+</head>
+<body>
+
+<!-- Navigation -->
+<nav class="nav">
+  <div class="nav-inner">
+    <span class="nav-logo">📄 W.L.Zhou</span>
+    <ul class="nav-links">
+      <li><a href="#about">关于</a></li>
+      <li><a href="#experience">经历</a></li>
+      <li><a href="#projects">项目</a></li>
+      <li><a href="#portfolio">作品集</a></li>
+      <li><a href="#skills">技能</a></li>
+    </ul>
+  </div>
+</nav>
+
+<!-- Hero -->
+<header class="hero" id="about">
+  <div class="hero-inner">
+    <!-- Photo -->
+    <div class="hero-avatar-wrap">
+      <div class="hero-avatar" id="avatarContainer">
+        <img id="avatarImg" src="" alt="周文璐" style="display:none" onerror="this.style.display='none';document.getElementById('avatarPlaceholder').style.display='block'">
+        <span class="hero-avatar-placeholder" id="avatarPlaceholder">👤</span>
+      </div>
+      <label class="hero-avatar-upload" title="上传照片">📷</label>
+      <input type="file" accept="image/*" id="avatarInput" style="display:none" onchange="handleAvatarUpload(event)">
+    </div>
+    <!-- Info -->
+    <div class="hero-info">
+      <h1 class="hero-name">周文璐</h1>
+      <div class="hero-title">
+        AI运营 / AI产品运营
+        <span style="opacity:.5">·</span> 杭州
+        <span style="opacity:.5">·</span> 8K-12K
+        <span style="opacity:.5">·</span> 随时到岗
+      </div>
+      <div class="hero-badges">
+        <span class="hero-badge">🎯 AI工具深度应用</span>
+        <span class="hero-badge">📊 数据驱动运营</span>
+        <span class="hero-badge">🚀 从0到1搭建</span>
+        <span class="hero-badge">🔄 复合背景</span>
+      </div>
+      <div class="hero-contact">
+        <span>📞 17393376394</span>
+        <span>✉️ 3190706841@qq.com</span>
+        <span>🎓 浙江工商大学 · 本科</span>
+        <span>📅 2003.11</span>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- Core Advantages -->
+<section class="section" id="advantages">
+  <div class="section-inner">
+    <div class="section-label">核心优势</div>
+    <h2 class="section-title">为什么选择我</h2>
+    <div class="advantage-grid">
+      <div class="advantage-card reveal">
+        <div class="advantage-icon">🤖</div>
+        <h3>AI工具深度应用</h3>
+        <p>使用Claude（Agent/Skill）、Codex（Cli）在业务中实现AI辅助选品与自动化上品，效率提升50%以上</p>
+      </div>
+      <div class="advantage-card reveal">
+        <div class="advantage-icon">📊</div>
+        <h3>数据驱动运营</h3>
+        <p>数据科学专业背景，能独立用SQL/Python做数据分析，擅长利用AI工具高效完成数据处理及自动化脚本开发</p>
+      </div>
+      <div class="advantage-card reveal">
+        <div class="advantage-icon">🔧</div>
+        <h3>从0到1能力</h3>
+        <p>独立搭建TEMU新店并开发自动化工具，具备运营全流程闭环经验</p>
+      </div>
+      <div class="advantage-card reveal">
+        <div class="advantage-icon">🌐</div>
+        <h3>复合背景</h3>
+        <p>兼具零售运营、跨境电商、内容运营经验，能快速理解不同业务场景并应用AI工具提效</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Work Experience -->
+<section class="section section-alt" id="experience">
+  <div class="section-inner">
+    <div class="section-label">工作经历</div>
+    <h2 class="section-title">职业历程</h2>
+    <div class="timeline" id="timelineContainer">
+      <!-- Dynamically rendered -->
+    </div>
+    <div class="action-bar" id="experienceActions" style="display:none">
+      <button class="btn btn-outline btn-sm" onclick="openExperienceModal()">+ 添加工作经历</button>
+    </div>
+  </div>
+</section>
+
+<!-- Projects -->
+<section class="section" id="projects">
+  <div class="section-inner">
+    <div class="section-label">项目/实操</div>
+    <h2 class="section-title">项目经验</h2>
+    <div class="project-grid" id="projectsContainer">
+      <!-- Dynamically rendered -->
+    </div>
+    <div class="action-bar" id="projectActions" style="display:none">
+      <button class="btn btn-outline btn-sm" onclick="openProjectModal()">+ 添加项目</button>
+    </div>
+  </div>
+</section>
+
+<!-- Portfolio -->
+<section class="section section-alt" id="portfolio">
+  <div class="section-inner">
+    <div class="section-label">作品集</div>
+    <h2 class="section-title">我的作品</h2>
+    <div class="portfolio-grid" id="portfolioGrid">
+      <!-- Dynamically rendered -->
+    </div>
+    <div class="action-bar" id="portfolioActions" style="display:none">
+      <button class="btn btn-outline btn-sm" onclick="openPortfolioModal()">+ 添加作品</button>
+    </div>
+  </div>
+</section>
+
+<!-- Education -->
+<section class="section" id="education">
+  <div class="section-inner">
+    <div class="section-label">教育背景</div>
+    <h2 class="section-title">学历</h2>
+    <div class="edu-card reveal">
+      <div class="edu-icon">🎓</div>
+      <div class="edu-info">
+        <h3>浙江工商大学</h3>
+        <p>数据科学与大数据技术 · 本科 · 2021.09 - 2025.07</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Skills -->
+<section class="section section-alt" id="skills">
+  <div class="section-inner">
+    <div class="section-label">技能</div>
+    <h2 class="section-title">专业能力</h2>
+    <div class="skill-groups reveal">
+      <div class="skill-group">
+        <h3><span class="icon">🤖</span> AI工具</h3>
+        <div class="skill-tags">
+          <span class="skill-tag highlight">Claude (Agent/Skill)</span>
+          <span class="skill-tag highlight">Codex (Cli)</span>
+        </div>
+      </div>
+      <div class="skill-group">
+        <h3><span class="icon">🎨</span> AIGC工具</h3>
+        <div class="skill-tags">
+          <span class="skill-tag">即梦</span>
+          <span class="skill-tag">可灵</span>
+          <span class="skill-tag">AI生图工作流</span>
+        </div>
+      </div>
+      <div class="skill-group">
+        <h3><span class="icon">💻</span> 数据能力</h3>
+        <div class="skill-tags">
+          <span class="skill-tag highlight">SQL</span>
+          <span class="skill-tag highlight">Python</span>
+          <span class="skill-tag">AI辅助数据分析</span>
+          <span class="skill-tag">自动化脚本开发</span>
+        </div>
+      </div>
+      <div class="skill-group">
+        <h3><span class="icon">🛒</span> 平台经验</h3>
+        <div class="skill-tags">
+          <span class="skill-tag">TEMU（半托管）</span>
+          <span class="skill-tag">1688</span>
+          <span class="skill-tag">亚马逊选品调研</span>
+        </div>
+      </div>
+      <div class="skill-group">
+        <h3><span class="icon">🌍</span> 语言</h3>
+        <div class="skill-tags">
+          <span class="skill-tag">英语 CET-4</span>
+        </div>
+      </div>
+      <div class="skill-group">
+        <h3><span class="icon">📎</span> 办公</h3>
+        <div class="skill-tags">
+          <span class="skill-tag">Excel / PPT / Word 熟练</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Footer -->
+<footer class="footer">
+  <p>© 2026 周文璐 · 用AI赋能运营，让效率翻倍</p>
+</footer>
+
+<!-- Edit mode toggle -->
+<div class="edit-badge" id="editToggle" title="切换编辑模式" onclick="toggleEditMode()">✏️ 编辑</div>
+<div class="edit-badge" id="exportBtn" title="导出为独立HTML文件" onclick="exportHTML()" style="bottom:72px">📥 导出</div>
+<div class="edit-badge" id="resetBtn" title="恢复默认数据" onclick="resetData()" style="bottom:120px;display:none">🔄 重置</div>
+
+<!-- Toast -->
+<div class="toast" id="toast"></div>
+
+<!-- Modal for adding/editing experience -->
+<div class="modal-overlay" id="expModalOverlay">
+  <div class="modal" style="position:relative">
+    <button class="modal-close" style="position:sticky;top:0;float:right" onclick="closeModal('expModalOverlay')">✕</button>
+    <h3 id="expModalTitle">添加工作经历</h3>
+    <div class="form-group"><label>公司名称</label><input id="expCompany" placeholder="例：杭州彩连科技有限公司"></div>
+    <div class="form-group"><label>职位</label><input id="expRole" placeholder="例：运营专员"></div>
+    <div class="form-group"><label>时间</label><input id="expDate" placeholder="例：2026.02-2026.05"></div>
+    <div class="form-group"><label>工作内容（每行一条）</label><textarea id="expDetails" placeholder="例：负责选品和数据分析&#10;开发自动化工具提升效率"></textarea></div>
+    <div class="form-group"><label>离职原因（可选）</label><input id="expReason" placeholder="点击按钮可查看，留空则不显示"></div>
+    <input type="hidden" id="expEditIndex" value="-1">
+    <div class="form-actions">
+      <button class="btn btn-outline btn-sm" onclick="closeModal('expModalOverlay')">取消</button>
+      <button class="btn btn-primary btn-sm" onclick="saveExperience()">保存</button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal for adding/editing project -->
+<div class="modal-overlay" id="projModalOverlay">
+  <div class="modal" style="position:relative">
+    <button class="modal-close" style="position:sticky;top:0;float:right" onclick="closeModal('projModalOverlay')">✕</button>
+    <h3 id="projModalTitle">添加项目</h3>
+    <div class="form-group"><label>项目名称</label><input id="projName" placeholder="例：AI选品Agent"></div>
+    <div class="form-group"><label>项目描述</label><textarea id="projDesc" placeholder="描述项目内容和成果"></textarea></div>
+    <div class="form-group"><label>标签</label><input id="projTag" placeholder="例：AI / 自动化"></div>
+    <input type="hidden" id="projEditIndex" value="-1">
+    <div class="form-actions">
+      <button class="btn btn-outline btn-sm" onclick="closeModal('projModalOverlay')">取消</button>
+      <button class="btn btn-primary btn-sm" onclick="saveProject()">保存</button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal for adding portfolio -->
+<div class="modal-overlay" id="portModalOverlay">
+  <div class="modal" style="position:relative">
+    <button class="modal-close" style="position:sticky;top:0;float:right" onclick="closeModal('portModalOverlay')">✕</button>
+    <h3>添加作品</h3>
+    <div class="form-group"><label>作品名称</label><input id="portName" placeholder="例：选品Agent自动化流程截图"></div>
+    <div class="form-group"><label>上传图片</label><input type="file" accept="image/*" id="portFileInput" onchange="handlePortFileSelect(event)"></div>
+    <div class="form-group" style="text-align:center;color:var(--text-muted);margin:8px 0">— 或者 —</div>
+    <div class="form-group"><label>粘贴图片链接</label><input id="portUrl" placeholder="https://example.com/image.jpg"></div>
+    <div id="portPreview" style="text-align:center;margin-bottom:12px"></div>
+    <div class="form-actions">
+      <button class="btn btn-outline btn-sm" onclick="closeModal('portModalOverlay')">取消</button>
+      <button class="btn btn-primary btn-sm" onclick="savePortfolio()">保存</button>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ============ Data Store ============ */
+const DEFAULT_EXPERIENCES = [
+  {
+    company:'杭州彩连科技有限公司',
+    role:'运营专员',
+    date:'2026.02 - 2026.05',
+    details:[
+      '轮岗采购、商品运营、物流部门，深入了解外贸全流程，持续输出选品方案；通过1688完成选品选厂，达成2次厂家多品合作及数次单品合作',
+      '利用Claude训练跨境电商选品Agent，编写多个Skill用于亚马逊平台品类选品分析评估，实现AI辅助选品决策',
+      '独立从0搭建TEMU半托管店铺，负责选品上架、订单处理、售后及日常数据追踪',
+      '使用Codex开发自动化脚本（设计图批量下载 + 上品表格自动填写），上品效率提升50%以上',
+      '每周输出物流亏损数据分析表，完成竞品信息采集及对标分析'
+    ],
+    reason:'公司业务方向频繁变更，且缺少发展空间，决定聚焦AI方向发展'
+  },
+  {
+    company:'小米通讯技术有限公司',
+    role:'新零售店长管培',
+    date:'2025.07 - 2026.01',
+    details:[
+      '个人月均销售额高于店内均值，数字旗舰系列发布首周销售额达成120%',
+      '参与4家门店陈列调优及4次新品首销相关工作，兼任小区市场职能岗',
+      '负责门店及个人新媒体账号日常运营，定期完成门店数据复盘总结'
+    ],
+    reason:'杭州门店饱和，定岗需外派金华'
+  },
+  {
+    company:'杭州学天砺行教育科技有限公司',
+    role:'运营实习生',
+    date:'2024.09 - 2024.12',
+    details:[
+      '负责证书资料审核整理及各课程数据反馈情况统计与分析',
+      '线上组织销售部门沟通交流，参与产品定位分析及营销策略制定'
+    ],
+    reason:''
+  }
+];
+
+const DEFAULT_PROJECTS = [
+  {name:'AI选品Agent',desc:'利用Claude训练跨境电商选品Agent，编写多个Skill实现结构化选品评估报告输出，辅助选品决策',tag:'AI / Agent'},
+  {name:'自动化上品工具',desc:'基于Codex开发TEMU批量上品脚本，包含设计图批量下载及上品表格自动填写功能，将手工操作转化为自动化流程，效率提升50%以上',tag:'自动化 / Codex'}
+];
+
+function loadData(key, defaults){
+  try{
+    const stored = localStorage.getItem(key);
+    if(stored) return JSON.parse(stored);
+  }catch(e){}
+  return defaults;
+}
+function saveData(key,data){localStorage.setItem(key,JSON.stringify(data))}
+
+let experiences = loadData('resume_experiences', DEFAULT_EXPERIENCES);
+let projects = loadData('resume_projects', DEFAULT_PROJECTS);
+let portfolioItems = loadData('resume_portfolio', []);
+let avatarSrc = localStorage.getItem('resume_avatar') || '';
+let editMode = false;
+
+/* ============ Render Functions ============ */
+function renderExperiences(){
+  const container = document.getElementById('timelineContainer');
+  container.innerHTML = experiences.map((exp, i) => `
+    <div class="timeline-item reveal">
+      <div class="timeline-dot"></div>
+      <div class="timeline-card">
+        ${editMode ? `<button class="delete-btn" onclick="deleteExperience(${i})" title="删除">✕</button>` : ''}
+        <div class="timeline-header">
+          <span class="timeline-company">${esc(exp.company)}</span>
+          <span class="timeline-date">${esc(exp.date)}</span>
+        </div>
+        <div class="timeline-role">${esc(exp.role)}</div>
+        <ul class="timeline-details">
+          ${exp.details.map(d => `<li>${esc(d)}</li>`).join('')}
+        </ul>
+        ${exp.reason ? `
+        <button class="reason-toggle" onclick="toggleReason(this)">
+          查看离职原因 <span class="arrow">▾</span>
+        </button>
+        <div class="reason-content">${esc(exp.reason)}</div>
+        ` : ''}
+        ${editMode ? `<button class="btn btn-outline btn-sm" style="margin-top:10px" onclick="editExperience(${i})">✏️ 编辑</button>` : ''}
+      </div>
+    </div>
+  `).join('');
+  document.getElementById('experienceActions').style.display = editMode ? 'flex' : 'none';
+}
+
+function renderProjects(){
+  const container = document.getElementById('projectsContainer');
+  container.innerHTML = projects.map((p, i) => `
+    <div class="project-card reveal">
+      ${editMode ? `<button class="delete-btn" onclick="deleteProject(${i})" title="删除">✕</button>` : ''}
+      <h3>${esc(p.name)}</h3>
+      <p>${esc(p.desc)}</p>
+      <span class="project-tag">${esc(p.tag)}</span>
+      ${editMode ? `<button class="btn btn-outline btn-sm" style="margin-top:10px;display:block" onclick="editProject(${i})">✏️ 编辑</button>` : ''}
+    </div>
+  `).join('');
+  document.getElementById('projectActions').style.display = editMode ? 'flex' : 'none';
+}
+
+function renderPortfolio(){
+  const grid = document.getElementById('portfolioGrid');
+  grid.innerHTML = portfolioItems.map((item, i) => `
+    <div class="portfolio-item" onclick="previewImage('${esc(item.src)}')">
+      <img src="${esc(item.src)}" alt="${esc(item.name||'作品')}" loading="lazy" onerror="this.parentElement.querySelector('.portfolio-item-fallback').style.display='flex';this.style.display='none'">
+      <div class="portfolio-item-fallback" style="display:none;position:absolute;inset:0;background:var(--surface-alt);align-items:center;justify-content:center;font-size:2rem;color:var(--text-muted)">🖼️</div>
+      <div class="portfolio-item-overlay">${esc(item.name||'查看')}</div>
+      ${editMode ? `<button class="delete-btn" style="opacity:1;z-index:2" onclick="event.stopPropagation();deletePortfolio(${i})">✕</button>` : ''}
+      ${item.name ? `<div style="position:absolute;bottom:0;left:0;right:0;padding:8px 12px;background:linear-gradient(transparent,rgba(0,0,0,.6));color:#fff;font-size:.78rem;font-weight:500">${esc(item.name)}</div>` : ''}
+    </div>
+  `).join('') + (editMode ? `
+    <div class="portfolio-add" onclick="document.getElementById('portfolioInput').click()">
+      <span class="portfolio-add-icon">+</span>
+      <span>添加作品</span>
+    </div>
+  ` : (portfolioItems.length === 0 ? `
+    <div style="grid-column:1/-1;text-align:center;color:var(--text-muted);padding:40px">
+      <p style="font-size:2rem;margin-bottom:8px">🖼️</p>
+      <p>暂未上传作品，开启编辑模式即可添加</p>
+    </div>
+  ` : ''));
+  document.getElementById('portfolioActions').style.display = editMode ? 'flex' : 'none';
+  // Update add button target
+  const addBtn = document.querySelector('.portfolio-add');
+  if(addBtn) addBtn.onclick = function(){ openPortfolioModal(); };
+}
+
+function renderAll(){
+  renderExperiences();
+  renderProjects();
+  renderPortfolio();
+  if(avatarSrc){
+    document.getElementById('avatarImg').src = avatarSrc;
+    document.getElementById('avatarImg').style.display = 'block';
+    document.getElementById('avatarPlaceholder').style.display = 'none';
+  }
+  observeReveal();
+}
+
+/* ============ CRUD Operations ============ */
+function deleteExperience(i){
+  if(!confirm('确定删除这条工作经历？')) return;
+  experiences.splice(i,1);
+  saveData('resume_experiences', experiences);
+  renderExperiences();
+  toast('已删除 ✓');
+}
+function editExperience(i){
+  const exp = experiences[i];
+  document.getElementById('expCompany').value = exp.company;
+  document.getElementById('expRole').value = exp.role;
+  document.getElementById('expDate').value = exp.date;
+  document.getElementById('expDetails').value = exp.details.join('\n');
+  document.getElementById('expReason').value = exp.reason || '';
+  document.getElementById('expEditIndex').value = i;
+  document.getElementById('expModalTitle').textContent = '编辑工作经历';
+  openModal('expModalOverlay');
+}
+function openExperienceModal(){
+  document.getElementById('expCompany').value = '';
+  document.getElementById('expRole').value = '';
+  document.getElementById('expDate').value = '';
+  document.getElementById('expDetails').value = '';
+  document.getElementById('expReason').value = '';
+  document.getElementById('expEditIndex').value = '-1';
+  document.getElementById('expModalTitle').textContent = '添加工作经历';
+  openModal('expModalOverlay');
+}
+function saveExperience(){
+  const company = document.getElementById('expCompany').value.trim();
+  const role = document.getElementById('expRole').value.trim();
+  const date = document.getElementById('expDate').value.trim();
+  const details = document.getElementById('expDetails').value.trim().split('\n').filter(l=>l.trim());
+  const reason = document.getElementById('expReason').value.trim();
+  if(!company||!role||!date||details.length===0){toast('请填写完整信息');return;}
+  const idx = parseInt(document.getElementById('expEditIndex').value);
+  if(idx >= 0){experiences[idx] = {company,role,date,details,reason}}
+  else{experiences.push({company,role,date,details,reason})}
+  saveData('resume_experiences', experiences);
+  closeModal('expModalOverlay');
+  renderExperiences();
+  toast(idx>=0?'已更新 ✓':'已添加 ✓');
+}
+
+function deleteProject(i){
+  if(!confirm('确定删除这个项目？')) return;
+  projects.splice(i,1);
+  saveData('resume_projects', projects);
+  renderProjects();
+  toast('已删除 ✓');
+}
+function editProject(i){
+  const p = projects[i];
+  document.getElementById('projName').value = p.name;
+  document.getElementById('projDesc').value = p.desc;
+  document.getElementById('projTag').value = p.tag;
+  document.getElementById('projEditIndex').value = i;
+  document.getElementById('projModalTitle').textContent = '编辑项目';
+  openModal('projModalOverlay');
+}
+function openProjectModal(){
+  document.getElementById('projName').value = '';
+  document.getElementById('projDesc').value = '';
+  document.getElementById('projTag').value = '';
+  document.getElementById('projEditIndex').value = '-1';
+  document.getElementById('projModalTitle').textContent = '添加项目';
+  openModal('projModalOverlay');
+}
+function saveProject(){
+  const name = document.getElementById('projName').value.trim();
+  const desc = document.getElementById('projDesc').value.trim();
+  const tag = document.getElementById('projTag').value.trim();
+  if(!name||!desc||!tag){toast('请填写完整信息');return;}
+  const idx = parseInt(document.getElementById('projEditIndex').value);
+  if(idx >= 0){projects[idx] = {name,desc,tag}}
+  else{projects.push({name,desc,tag})}
+  saveData('resume_projects', projects);
+  closeModal('projModalOverlay');
+  renderProjects();
+  toast(idx>=0?'已更新 ✓':'已添加 ✓');
+}
+
+function deletePortfolio(i){
+  if(!confirm('确定删除这个作品？')) return;
+  portfolioItems.splice(i,1);
+  saveData('resume_portfolio', portfolioItems);
+  renderPortfolio();
+  toast('已删除 ✓');
+}
+
+/* ============ Photo Upload ============ */
+function handleAvatarUpload(e){
+  const file = e.target.files[0];
+  if(!file) return;
+  const reader = new FileReader();
+  reader.onload = function(ev){
+    // Resize image for performance
+    const img = new Image();
+    img.onload = function(){
+      const canvas = document.createElement('canvas');
+      const maxW = 400;
+      const scale = Math.min(1, maxW / img.width);
+      canvas.width = img.width * scale;
+      canvas.height = img.height * scale;
+      const ctx = canvas.getContext('2d');
+      ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+      const compressed = canvas.toDataURL('image/jpeg', 0.85);
+      avatarSrc = compressed;
+      localStorage.setItem('resume_avatar', compressed);
+      document.getElementById('avatarImg').src = compressed;
+      document.getElementById('avatarImg').style.display = 'block';
+      document.getElementById('avatarPlaceholder').style.display = 'none';
+      toast('照片已更新 ✓');
+    };
+    img.src = ev.target.result;
+  };
+  reader.readAsDataURL(file);
+}
+document.querySelector('.hero-avatar-upload').addEventListener('click',function(){
+  document.getElementById('avatarInput').click();
+});
+
+/* ============ Portfolio Upload ============ */
+let _portFileData = null;
+function openPortfolioModal(){
+  document.getElementById('portName').value = '';
+  document.getElementById('portUrl').value = '';
+  document.getElementById('portFileInput').value = '';
+  document.getElementById('portPreview').innerHTML = '';
+  _portFileData = null;
+  openModal('portModalOverlay');
+}
+function handlePortFileSelect(e){
+  const file = e.target.files[0];
+  if(!file) return;
+  document.getElementById('portUrl').value = '';
+  const reader = new FileReader();
+  reader.onload = function(ev){
+    const img = new Image();
+    img.onload = function(){
+      const canvas = document.createElement('canvas');
+      const maxW = 600;
+      const scale = Math.min(1, maxW/img.width);
+      canvas.width = img.width*scale;
+      canvas.height = img.height*scale;
+      canvas.getContext('2d').drawImage(img,0,0,canvas.width,canvas.height);
+      _portFileData = canvas.toDataURL('image/jpeg',0.8);
+      document.getElementById('portPreview').innerHTML = '<img src="'+_portFileData+'" style="max-width:200px;max-height:150px;border-radius:8px;margin-top:8px"><p style="font-size:.78rem;color:var(--accent);margin-top:4px">已选择: '+file.name+'</p>';
+    };
+    img.src = ev.target.result;
+  };
+  reader.readAsDataURL(file);
+}
+function savePortfolio(){
+  const name = document.getElementById('portName').value.trim();
+  const url = document.getElementById('portUrl').value.trim();
+  let src = _portFileData || url;
+  if(!src){ toast('请上传图片或粘贴链接'); return; }
+  if(!name){ toast('请输入作品名称'); return; }
+  portfolioItems.push({name: name, src: src});
+  saveData('resume_portfolio', portfolioItems);
+  closeModal('portModalOverlay');
+  renderPortfolio();
+  toast('作品已添加 ✓');
+}
+
+/* ============ Image Preview ============ */
+function previewImage(src){
+  const overlay = document.createElement('div');
+  overlay.style.cssText = 'position:fixed;inset:0;z-index:250;background:rgba(0,0,0,.85);display:flex;align-items:center;justify-content:center;cursor:pointer;padding:24px';
+  const img = document.createElement('img');
+  img.src = src;
+  img.style.cssText = 'max-width:90vw;max-height:90vh;border-radius:8px;object-fit:contain';
+  overlay.appendChild(img);
+  overlay.addEventListener('click',function(){overlay.remove()});
+  document.body.appendChild(overlay);
+}
+
+/* ============ Reason Toggle ============ */
+function toggleReason(btn){
+  btn.classList.toggle('open');
+  const content = btn.nextElementSibling;
+  content.classList.toggle('show');
+}
+
+/* ============ Edit Mode ============ */
+function toggleEditMode(){
+  editMode = !editMode;
+  const badge = document.getElementById('editToggle');
+  const resetBtn = document.getElementById('resetBtn');
+  if(editMode){
+    badge.textContent = '👁️ 预览';
+    badge.classList.add('active');
+    resetBtn.style.display = 'flex';
+  }else{
+    badge.textContent = '✏️ 编辑';
+    badge.classList.remove('active');
+    resetBtn.style.display = 'none';
+  }
+  renderAll();
+  toast(editMode ? '编辑模式已开启 — 可添加/删除/编辑内容' : '预览模式');
+}
+function resetData(){
+  if(!confirm('确定恢复所有数据为默认内容吗？你添加的内容将丢失。')) return;
+  localStorage.removeItem('resume_experiences');
+  localStorage.removeItem('resume_projects');
+  localStorage.removeItem('resume_portfolio');
+  localStorage.removeItem('resume_avatar');
+  experiences = JSON.parse(JSON.stringify(DEFAULT_EXPERIENCES));
+  projects = JSON.parse(JSON.stringify(DEFAULT_PROJECTS));
+  portfolioItems = [];
+  avatarSrc = '';
+  document.getElementById('avatarImg').style.display = 'none';
+  document.getElementById('avatarPlaceholder').style.display = 'block';
+  renderAll();
+  toast('数据已恢复默认 ✓');
+}
+
+/* ============ Modal ============ */
+function openModal(id){document.getElementById(id).classList.add('show')}
+function closeModal(id){document.getElementById(id).classList.remove('show')}
+document.querySelectorAll('.modal-overlay').forEach(ov=>{
+  ov.addEventListener('click',function(e){if(e.target===this)closeModal(this.id)})
+});
+
+/* ============ Toast ============ */
+function toast(msg){
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  clearTimeout(t._timeout);
+  t._timeout = setTimeout(function(){t.classList.remove('show')},2000);
+}
+
+/* ============ Scroll Reveal ============ */
+function observeReveal(){
+  const observer = new IntersectionObserver(function(entries){
+    entries.forEach(function(e){
+      if(e.isIntersecting){e.target.classList.add('visible');observer.unobserve(e.target)}
+    });
+  },{threshold:0.15});
+  document.querySelectorAll('.reveal').forEach(function(el){observer.observe(el)});
+}
+
+/* ============ Escape ============ */
+function esc(s){const d=document.createElement('div');d.textContent=s;return d.innerHTML}
+
+/* ============ Init ============ */
+renderAll();
+
+/* ============ Export ============ */
+function exportHTML(){
+  var expData = {
+    experiences: experiences,
+    projects: projects,
+    portfolioItems: portfolioItems,
+    avatarSrc: avatarSrc
+  };
+  // Preload script: sets localStorage BEFORE the main script runs
+  var preloadScript = '<script>window.__EMBEDDED__=' + JSON.stringify(expData)
+    + ';Object.keys(window.__EMBEDDED__).forEach(function(k){'
+    + 'var v=window.__EMBEDDED__[k];'
+    + 'if(k==="avatarSrc")localStorage.setItem("resume_avatar",v||"");'
+    + 'else localStorage.setItem("resume_"+k,JSON.stringify(v));'
+    + '});console.log("📄 简历数据已加载");<\/script>';
+
+  var fullHTML = '<!DOCTYPE html>\n' + document.documentElement.outerHTML;
+  // Insert preload script right before the main <script> block
+  // Find the main script tag opening
+  var mainScriptIdx = fullHTML.indexOf('<script>\n/* ============ Data Store');
+  if(mainScriptIdx !== -1){
+    fullHTML = fullHTML.substring(0, mainScriptIdx) + preloadScript + '\n' + fullHTML.substring(mainScriptIdx);
+  } else {
+    // Fallback: put before </body>
+    fullHTML = fullHTML.replace('</body>', preloadScript + '\n</body>');
+  }
+
+  var blob = new Blob([fullHTML], {type:'text/html;charset=utf-8'});
+  var url = URL.createObjectURL(blob);
+  var a = document.createElement('a');
+  a.href = url;
+  a.download = '周文璐_个人简历.html';
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+  toast('已导出！上传到 GitHub Pages 即可分享 📤');
+}
+
+/* ============ Keyboard shortcut ============ */
+document.addEventListener('keydown',function(e){
+  if(e.key==='Escape'){document.querySelectorAll('.modal-overlay.show').forEach(function(m){m.classList.remove('show')})}
+});
+</script>
+
+</body>
+</html>
