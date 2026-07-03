@@ -1,0 +1,1229 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>简历DIY - 制作你的个人简历</title>
+<style>
+/* ===== Editor Reset & Variables ===== */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --ed-bg:#f0f0f3;
+  --ed-surface:#fff;
+  --ed-text:#1d1d1f;
+  --ed-text2:#86868b;
+  --ed-border:#e5e5ea;
+  --ed-accent:#5b5fef;
+  --ed-accent-hover:#4845d6;
+  --ed-accent-light:#eef0ff;
+  --ed-danger:#e55;
+  --ed-radius:10px;
+  --ed-radius-sm:6px;
+  --ed-font:"PingFang SC","Microsoft YaHei",system-ui,-apple-system,sans-serif;
+}
+body{font-family:var(--ed-font);background:var(--ed-bg);color:var(--ed-text);height:100vh;overflow:hidden;display:flex;flex-direction:column}
+
+/* ===== Top Bar ===== */
+.topbar{
+  height:56px;min-height:56px;background:var(--ed-surface);
+  border-bottom:1px solid var(--ed-border);display:flex;
+  align-items:center;padding:0 16px;gap:12px;z-index:100;
+  box-shadow:0 1px 4px rgba(0,0,0,.04);position:relative;
+}
+.topbar-left{display:flex;align-items:center;gap:10px;flex-shrink:0}
+.back-link{
+  text-decoration:none;color:var(--ed-text2);font-size:.84rem;
+  font-weight:500;transition:color .2s;white-space:nowrap;
+  display:flex;align-items:center;gap:4px;
+}
+.back-link:hover{color:var(--ed-accent)}
+.topbar-divider{color:var(--ed-border);font-size:.9rem}
+.topbar-title{font-weight:700;font-size:.95rem;white-space:nowrap}
+.topbar-center{
+  flex:1;display:flex;justify-content:center;gap:6px;
+  overflow-x:auto;padding:0 8px;
+}
+.template-btn{
+  padding:6px 14px;border-radius:20px;border:1.5px solid var(--ed-border);
+  background:var(--ed-surface);font-size:.8rem;cursor:pointer;
+  transition:all .2s;white-space:nowrap;font-family:var(--ed-font);
+  color:var(--ed-text2);font-weight:500;
+}
+.template-btn:hover{border-color:var(--ed-accent);color:var(--ed-accent)}
+.template-btn.active{background:var(--ed-accent);color:#fff;border-color:var(--ed-accent);font-weight:600}
+.topbar-right{display:flex;align-items:center;gap:8px;flex-shrink:0}
+.filename-input{
+  width:130px;padding:6px 10px;border-radius:var(--ed-radius-sm);
+  border:1.5px solid var(--ed-border);font-size:.82rem;
+  font-family:var(--ed-font);color:var(--ed-text);text-align:center;
+  transition:border-color .2s;
+}
+.filename-input:focus{outline:none;border-color:var(--ed-accent)}
+.export-btn{
+  padding:7px 14px;border-radius:20px;border:none;
+  font-size:.8rem;cursor:pointer;font-weight:600;
+  font-family:var(--ed-font);transition:all .2s;
+  background:var(--ed-accent-light);color:var(--ed-accent);white-space:nowrap;
+}
+.export-btn:hover{background:var(--ed-accent);color:#fff}
+.export-btn.primary{background:var(--ed-accent);color:#fff}
+.export-btn.primary:hover{background:var(--ed-accent-hover)}
+
+/* ===== Main Layout ===== */
+.main-wrap{flex:1;display:flex;overflow:hidden}
+
+/* ===== Left Panel ===== */
+.editor-panel{
+  width:380px;min-width:380px;background:var(--ed-surface);
+  border-right:1px solid var(--ed-border);overflow-y:auto;
+  padding:8px;scroll-behavior:smooth;
+}
+.editor-panel::-webkit-scrollbar{width:5px}
+.editor-panel::-webkit-scrollbar-thumb{background:var(--ed-border);border-radius:10px}
+
+.accordion{margin-bottom:4px;border-radius:var(--ed-radius);overflow:hidden}
+.accordion-header{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:12px 14px;cursor:pointer;font-weight:600;font-size:.88rem;
+  background:var(--ed-bg);border-radius:var(--ed-radius);
+  transition:all .2s;user-select:none;gap:8px;
+}
+.accordion-header:hover{background:#e8e8ed}
+.accordion-header .arrow{transition:transform .25s;font-size:.7rem;color:var(--ed-text2)}
+.accordion.open .accordion-header .arrow{transform:rotate(180deg)}
+.accordion.open .accordion-header{background:var(--ed-accent-light);color:var(--ed-accent)}
+.accordion-body{display:none;padding:12px 14px}
+.accordion.open .accordion-body{display:block}
+
+.form-row{display:flex;gap:8px;margin-bottom:10px;flex-wrap:wrap}
+.form-row input,.form-row textarea{
+  flex:1;min-width:80px;padding:8px 10px;border-radius:var(--ed-radius-sm);
+  border:1.5px solid var(--ed-border);font-family:var(--ed-font);
+  font-size:.84rem;color:var(--ed-text);transition:border-color .2s;
+  background:var(--ed-bg);
+}
+.form-row input:focus,.form-row textarea:focus{outline:none;border-color:var(--ed-accent);background:var(--ed-surface)}
+.form-row textarea{min-height:60px;resize:vertical;width:100%}
+.form-label{font-size:.78rem;color:var(--ed-text2);font-weight:600;margin-bottom:3px;display:block}
+
+.dynamic-list{margin-top:6px}
+.dynamic-item{
+  background:var(--ed-bg);border-radius:var(--ed-radius-sm);
+  padding:10px 12px;margin-bottom:8px;position:relative;
+  border:1px solid transparent;transition:border-color .2s;
+}
+.dynamic-item:hover{border-color:var(--ed-border)}
+.dynamic-item .remove-btn{
+  position:absolute;top:8px;right:8px;
+  width:24px;height:24px;border-radius:50%;
+  border:none;background:transparent;color:var(--ed-text2);
+  cursor:pointer;font-size:1rem;transition:all .2s;
+  display:flex;align-items:center;justify-content:center;
+}
+.dynamic-item .remove-btn:hover{background:#fee2e2;color:var(--ed-danger)}
+.add-btn{
+  width:100%;padding:8px;border-radius:var(--ed-radius-sm);
+  border:2px dashed var(--ed-border);background:transparent;
+  color:var(--ed-text2);font-size:.82rem;cursor:pointer;
+  font-family:var(--ed-font);font-weight:500;transition:all .2s;
+}
+.add-btn:hover{border-color:var(--ed-accent);color:var(--ed-accent);background:var(--ed-accent-light)}
+
+.avatar-upload-area{
+  display:flex;align-items:center;gap:12px;margin-bottom:10px;
+}
+.avatar-preview{
+  width:64px;height:64px;border-radius:50%;background:var(--ed-bg);
+  border:2px dashed var(--ed-border);display:flex;align-items:center;
+  justify-content:center;overflow:hidden;flex-shrink:0;
+  font-size:1.5rem;color:var(--ed-text2);cursor:pointer;transition:all .2s;
+}
+.avatar-preview:hover{border-color:var(--ed-accent)}
+.avatar-preview img{width:100%;height:100%;object-fit:cover}
+.avatar-hint{font-size:.78rem;color:var(--ed-text2)}
+
+/* ===== Right Panel ===== */
+.preview-panel{
+  flex:1;display:flex;align-items:flex-start;justify-content:center;
+  padding:20px;overflow:auto;background:var(--ed-bg);
+}
+.preview-panel iframe{
+  width:100%;max-width:900px;min-height:100%;border:none;
+  border-radius:12px;box-shadow:0 8px 40px rgba(0,0,0,.12);
+  background:#fff;
+}
+
+/* ===== Toast ===== */
+.toast{
+  position:fixed;bottom:32px;left:50%;transform:translateX(-50%) translateY(100px);
+  background:#1d1d1f;color:#fff;padding:10px 22px;border-radius:22px;
+  font-size:.84rem;z-index:999;transition:transform .35s cubic-bezier(.4,0,.2,1);
+  pointer-events:none;font-weight:500;
+}
+.toast.show{transform:translateX(-50%) translateY(0)}
+
+/* ===== Responsive ===== */
+@media(max-width:900px){
+  .main-wrap{flex-direction:column}
+  .editor-panel{width:100%;min-width:100%;max-height:45%;border-right:none;border-bottom:1px solid var(--ed-border)}
+  .preview-panel{min-height:55%;padding:12px}
+  .template-btn{font-size:.74rem;padding:5px 10px}
+  .topbar{flex-wrap:wrap;height:auto;padding:8px 12px;gap:8px}
+  .topbar-center{order:3;width:100%;justify-content:flex-start}
+}
+</style>
+</head>
+<body>
+
+<!-- ===== Top Bar ===== -->
+<header class="topbar">
+  <div class="topbar-left">
+    <a href="index.html" class="back-link">← 返回周文璐主页</a>
+    <span class="topbar-divider">|</span>
+    <span class="topbar-title">📝 简历DIY制作器</span>
+  </div>
+  <div class="topbar-center" id="templateTabs"></div>
+  <div class="topbar-right">
+    <input class="filename-input" id="fileNameInput" placeholder="文件名" onchange="onFileNameChange()">
+    <button class="export-btn primary" onclick="exportHTML()">📥 HTML</button>
+    <button class="export-btn" onclick="exportPDF()">📄 PDF</button>
+  </div>
+</header>
+
+<!-- ===== Main ===== -->
+<div class="main-wrap">
+  <!-- Left Panel -->
+  <aside class="editor-panel" id="editorPanel">
+    <div class="accordion open" id="acc-basics">
+      <div class="accordion-header" onclick="toggleAccordion('acc-basics')">📋 基本信息 <span class="arrow">▾</span></div>
+      <div class="accordion-body" id="formBasics"></div>
+    </div>
+    <div class="accordion" id="acc-advantages">
+      <div class="accordion-header" onclick="toggleAccordion('acc-advantages')">💪 核心优势 <span class="arrow">▾</span></div>
+      <div class="accordion-body" id="formAdvantages"></div>
+    </div>
+    <div class="accordion open" id="acc-experiences">
+      <div class="accordion-header" onclick="toggleAccordion('acc-experiences')">💼 工作经历 <span class="arrow">▾</span></div>
+      <div class="accordion-body" id="formExperiences"></div>
+    </div>
+    <div class="accordion" id="acc-projects">
+      <div class="accordion-header" onclick="toggleAccordion('acc-projects')">🚀 项目经验 <span class="arrow">▾</span></div>
+      <div class="accordion-body" id="formProjects"></div>
+    </div>
+    <div class="accordion" id="acc-portfolio">
+      <div class="accordion-header" onclick="toggleAccordion('acc-portfolio')">🖼️ 作品集 <span class="arrow">▾</span></div>
+      <div class="accordion-body" id="formPortfolio"></div>
+    </div>
+    <div class="accordion" id="acc-education">
+      <div class="accordion-header" onclick="toggleAccordion('acc-education')">🎓 教育背景 <span class="arrow">▾</span></div>
+      <div class="accordion-body" id="formEducation"></div>
+    </div>
+    <div class="accordion" id="acc-skills">
+      <div class="accordion-header" onclick="toggleAccordion('acc-skills')">🛠️ 专业技能 <span class="arrow">▾</span></div>
+      <div class="accordion-body" id="formSkills"></div>
+    </div>
+    <div style="padding:12px 14px;display:flex;gap:8px">
+      <button class="add-btn" onclick="clearAll()" style="color:var(--ed-danger);border-color:var(--ed-danger)">🗑️ 清空所有内容</button>
+    </div>
+  </aside>
+
+  <!-- Right Panel -->
+  <main class="preview-panel">
+    <iframe id="previewFrame" title="简历预览"></iframe>
+  </main>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+/* ================================================================
+   DATA MODEL
+   ================================================================ */
+const EMPTY_DATA = {
+  basics: { name:'', title:'', location:'', salary:'', status:'随时到岗', phone:'', email:'', school:'', major:'', degree:'本科', schoolPeriod:'', birth:'' },
+  avatar: '',
+  advantages: [],
+  experiences: [],
+  projects: [],
+  education: { school:'', major:'', degree:'本科', period:'' },
+  skills: [],
+  portfolio: [],
+  templateId: 'classic-white',
+  fileName: '我的简历'
+};
+
+// Load from localStorage or use empty
+let resumeData = loadData();
+
+function loadData(){
+  try{
+    const d = localStorage.getItem('diy_resume_data');
+    if(d){ const parsed = JSON.parse(d); if(parsed && parsed.basics) return parsed; }
+  }catch(e){}
+  return JSON.parse(JSON.stringify(EMPTY_DATA));
+}
+
+function saveData(){
+  localStorage.setItem('diy_resume_data', JSON.stringify(resumeData));
+  renderPreview();
+}
+
+let saveTimeout;
+function autoSave(){
+  clearTimeout(saveTimeout);
+  saveTimeout = setTimeout(saveData, 300);
+}
+
+function debouncePreview(){
+  clearTimeout(saveTimeout);
+  saveTimeout = setTimeout(saveData, 300);
+}
+
+/* ================================================================
+   TEMPLATES
+   ================================================================ */
+const TEMPLATES = [
+  {
+    id: 'classic-white', name: '经典简约白', icon: '⬜',
+    render(data){ return renderClassicWhite(data); }
+  },
+  {
+    id: 'dark-tech', name: '深色科技风', icon: '🌙',
+    render(data){ return renderDarkTech(data); }
+  },
+  {
+    id: 'elegant-sidebar', name: '优雅侧边栏', icon: '📑',
+    render(data){ return renderElegantSidebar(data); }
+  },
+  {
+    id: 'timeline-narrative', name: '时间轴叙事', icon: '⏳',
+    render(data){ return renderTimelineNarrative(data); }
+  },
+  {
+    id: 'fresh-natural', name: '清新自然', icon: '🌿',
+    render(data){ return renderFreshNatural(data); }
+  }
+];
+
+function getCurrentTemplate(){
+  return TEMPLATES.find(t=>t.id===resumeData.templateId) || TEMPLATES[0];
+}
+
+/* ================================================================
+   TEMPLATE 1: 经典简约白
+   ================================================================ */
+function renderClassicWhite(d){
+  return `<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><title>${esc(d.basics.name||'未命名')} · 个人简历</title><style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{--bg:#f8f9fb;--surface:#fff;--surface-alt:#f1f3f7;--text:#1e1e2e;--text2:#5a5d6e;--text3:#8b8fa3;--accent:#5b5fef;--accent-light:#eef0ff;--gold:#c8a05a;--gold-light:#fdf6ed;--border:#e8eaf0;--shadow:0 4px 16px rgba(0,0,0,.06);--radius:12px;--font:"PingFang SC","Hiragino Sans GB","Microsoft YaHei",system-ui,sans-serif}
+body{font-family:var(--font);background:var(--bg);color:var(--text);line-height:1.7;-webkit-font-smoothing:antialiased}
+.hero{padding:80px 24px 64px;background:linear-gradient(160deg,#1a1a30 0%,#1e2040 30%,#1a1a35 60%,#222240 100%);color:#fff;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;top:-50%;right:-20%;width:500px;height:500px;background:radial-gradient(circle,rgba(91,95,239,.25),transparent 70%);border-radius:50%}
+.hero-inner{max-width:900px;margin:0 auto;position:relative;z-index:1;display:flex;align-items:center;gap:40px;flex-wrap:wrap}
+.hero-avatar{width:140px;height:140px;border-radius:50%;flex-shrink:0;background:rgba(255,255,255,.08);border:2px solid rgba(255,255,255,.15);display:flex;align-items:center;justify-content:center;overflow:hidden}
+.hero-avatar img{width:100%;height:100%;object-fit:cover}
+.hero-avatar span{font-size:3rem;color:rgba(255,255,255,.2)}
+.hero-name{font-size:2.4rem;font-weight:800}
+.hero-meta{color:rgba(255,255,255,.7);font-size:.95rem;margin:6px 0 12px;display:flex;flex-wrap:wrap;gap:4px 12px}
+.hero-contact{display:flex;flex-wrap:wrap;gap:6px 16px;font-size:.84rem;color:rgba(255,255,255,.5);margin-top:8px}
+.section{padding:56px 24px}
+.section-inner{max-width:900px;margin:0 auto}
+.section-label{font-size:.78rem;font-weight:700;letter-spacing:2px;color:var(--accent);margin-bottom:6px;text-transform:uppercase}
+.section-title{font-size:1.6rem;font-weight:800;margin-bottom:28px}
+.section-alt{background:var(--surface-alt)}
+.adv-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px}
+.adv-card{background:var(--surface);border-radius:var(--radius);padding:24px;box-shadow:var(--shadow);border:1px solid var(--border)}
+.adv-icon{font-size:1.4rem;margin-bottom:10px}
+.adv-card h3{font-size:.95rem;margin-bottom:4px}
+.adv-card p{font-size:.82rem;color:var(--text2);line-height:1.55}
+.timeline{position:relative}
+.timeline::before{content:'';position:absolute;left:17px;top:8px;bottom:8px;width:2px;background:var(--border)}
+.tl-item{position:relative;padding-left:44px;margin-bottom:28px}
+.tl-dot{position:absolute;left:9px;top:4px;width:18px;height:18px;border-radius:50%;background:var(--accent);border:3px solid var(--accent-light);z-index:1}
+.tl-card{background:var(--surface);border-radius:var(--radius);padding:24px;box-shadow:var(--shadow);border:1px solid var(--border)}
+.tl-header{display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;margin-bottom:6px}
+.tl-company{font-weight:700;font-size:1rem}
+.tl-date{font-size:.78rem;color:var(--text3);background:var(--surface-alt);padding:3px 10px;border-radius:12px}
+.tl-role{font-size:.85rem;color:var(--accent);font-weight:600;margin-bottom:6px}
+.tl-details{list-style:none}
+.tl-details li{font-size:.82rem;color:var(--text2);padding:2px 0 2px 16px;position:relative}
+.tl-details li::before{content:'';position:absolute;left:0;top:10px;width:4px;height:4px;border-radius:50%;background:var(--border)}
+.tl-reason{margin-top:10px;padding:10px 14px;background:var(--gold-light);border-radius:8px;border-left:3px solid var(--gold);font-size:.8rem;color:#8b6914}
+.proj-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px}
+.proj-card{background:var(--surface);border-radius:var(--radius);padding:22px;box-shadow:var(--shadow);border:1px solid var(--border)}
+.proj-card h3{font-size:.95rem;margin-bottom:6px}
+.proj-card p{font-size:.82rem;color:var(--text2)}
+.proj-tag{display:inline-block;margin-top:8px;padding:3px 10px;border-radius:12px;font-size:.74rem;font-weight:600;background:var(--accent-light);color:var(--accent)}
+.edu-card{background:var(--surface);border-radius:var(--radius);padding:24px;box-shadow:var(--shadow);border:1px solid var(--border);display:flex;gap:16px;align-items:center}
+.edu-icon{width:48px;height:48px;border-radius:10px;background:var(--gold-light);display:flex;align-items:center;justify-content:center;font-size:1.3rem;flex-shrink:0}
+.skill-groups{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:20px}
+.skill-group h3{font-size:.88rem;margin-bottom:10px}
+.skill-tags{display:flex;flex-wrap:wrap;gap:7px}
+.skill-tag{padding:5px 12px;border-radius:16px;font-size:.8rem;background:var(--surface);border:1px solid var(--border);color:var(--text2)}
+.footer{text-align:center;padding:32px;color:var(--text3);font-size:.78rem;border-top:1px solid var(--border)}
+@media(max-width:640px){.hero-inner{flex-direction:column;text-align:center}.hero-avatar{width:100px;height:100px}.hero-name{font-size:1.8rem}.hero-meta,.hero-contact{justify-content:center}.tl-header{flex-direction:column}.adv-grid{grid-template-columns:1fr}}
+@media print{body{background:#fff}.hero{background:#fff!important;color:#000!important;padding:20px 0}.hero-name,.hero-meta,.hero-contact{color:#000!important}.section{padding:16px 0;page-break-inside:avoid}.tl-card,.adv-card,.proj-card{box-shadow:none;border:1px solid #ddd}}
+</style></head><body>
+${buildHero(d)}
+<section class="section"><div class="section-inner">
+  <div class="section-label">核心优势</div><h2 class="section-title">为什么选择我</h2>
+  <div class="adv-grid">${(d.advantages||[]).map(a=>`<div class="adv-card"><div class="adv-icon">${esc(a.icon||'✨')}</div><h3>${esc(a.title)}</h3><p>${esc(a.desc)}</p></div>`).join('')}</div>
+</div></section>
+<section class="section section-alt"><div class="section-inner">
+  <div class="section-label">工作经历</div><h2 class="section-title">职业历程</h2>
+  <div class="timeline">${(d.experiences||[]).map(e=>`<div class="tl-item"><div class="tl-dot"></div><div class="tl-card"><div class="tl-header"><span class="tl-company">${esc(e.company)}</span><span class="tl-date">${esc(e.date)}</span></div><div class="tl-role">${esc(e.role)}</div><ul class="tl-details">${(e.details||[]).map(dd=>`<li>${esc(dd)}</li>`).join('')}</ul>${e.reason?`<div class="tl-reason">${esc(e.reason)}</div>`:''}</div></div>`).join('')}</div>
+</div></section>
+<section class="section"><div class="section-inner">
+  <div class="section-label">项目经验</div><h2 class="section-title">项目</h2>
+  <div class="proj-grid">${(d.projects||[]).map(p=>`<div class="proj-card"><h3>${esc(p.name)}</h3><p>${esc(p.desc)}</p><span class="proj-tag">${esc(p.tag)}</span></div>`).join('')}</div>
+</div></section>
+${(d.portfolio||[]).length?`<section class="section section-alt"><div class="section-inner"><div class="section-label">作品集</div><h2 class="section-title">我的作品</h2><div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:16px">${d.portfolio.map(p=>`<div style="aspect-ratio:1;border-radius:12px;overflow:hidden;position:relative;background:var(--surface-alt);border:1px solid var(--border);cursor:pointer">${p.type==='video'||(p.src||'').startsWith('data:video/')?`<video src="${esc(p.src)}" controls preload="metadata" style="width:100%;height:100%;object-fit:cover;background:#000"></video>`:`<img src="${esc(p.src)}" alt="${esc(p.name)}" style="width:100%;height:100%;object-fit:cover" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">`}<div style="display:none;position:absolute;inset:0;background:var(--surface-alt);align-items:center;justify-content:center;font-size:2rem;color:var(--text3)">🖼️</div><div style="position:absolute;bottom:0;left:0;right:0;padding:8px 12px;background:linear-gradient(transparent,rgba(0,0,0,.6));color:#fff;font-size:.78rem;font-weight:500">${esc(p.name)}</div></div>`).join('')}</div></div></section>`:''}
+${d.education.school?`<section class="section section-alt"><div class="section-inner"><div class="section-label">教育背景</div><h2 class="section-title">学历</h2><div class="edu-card"><div class="edu-icon">🎓</div><div><h3>${esc(d.education.school)}</h3><p style="font-size:.84rem;color:var(--text2)">${esc(d.education.major)} · ${esc(d.education.degree)} · ${esc(d.education.period)}</p></div></div></div></section>`:''}
+${(d.skills||[]).length?`<section class="section"><div class="section-inner"><div class="section-label">专业技能</div><h2 class="section-title">能力</h2><div class="skill-groups">${d.skills.map(s=>`<div class="skill-group"><h3>${esc(s.icon||'📌')} ${esc(s.category)}</h3><div class="skill-tags">${(s.items||[]).map(i=>`<span class="skill-tag">${esc(i)}</span>`).join('')}</div></div>`).join('')}</div></div></section>`:''}
+<footer class="footer"><p>${esc(d.basics.name||'未命名')} · 个人简历</p></footer>
+</body></html>`;
+}
+
+/* ================================================================
+   TEMPLATE 2: 深色科技风
+   ================================================================ */
+function renderDarkTech(d){
+  return `<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><title>${esc(d.basics.name||'未命名')} · 个人简历</title><style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{--bg:#0d1117;--surface:#161b22;--surface2:#21262d;--text:#e6edf3;--text2:#8b949e;--text3:#6e7681;--accent:#58a6ff;--accent2:#3fb950;--border:#30363d;--shadow:0 4px 16px rgba(0,0,0,.3);--radius:8px;--font:system-ui,-apple-system,sans-serif}
+body{font-family:var(--font);background:var(--bg);color:var(--text);line-height:1.7;max-width:800px;margin:0 auto;padding:40px 24px}
+.header{text-align:center;padding:40px 0;border-bottom:1px solid var(--border);margin-bottom:40px}
+.avatar{width:120px;height:120px;border-radius:50%;margin:0 auto 16px;background:var(--surface2);border:2px solid var(--border);display:flex;align-items:center;justify-content:center;overflow:hidden}
+.avatar img{width:100%;height:100%;object-fit:cover}
+.avatar span{font-size:2.5rem;color:var(--text3)}
+.name{font-size:2.2rem;font-weight:800;color:var(--accent2)}
+.meta{color:var(--text2);font-size:.88rem;margin:6px 0;display:flex;flex-wrap:wrap;justify-content:center;gap:4px 14px}
+.contact{color:var(--text3);font-size:.8rem;display:flex;flex-wrap:wrap;justify-content:center;gap:4px 16px;margin-top:4px}
+.sec{margin-bottom:40px}
+.sec-title{font-size:1.3rem;font-weight:700;color:var(--accent);margin-bottom:18px;padding-bottom:8px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:8px}
+.adv-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:14px}
+.adv-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:20px;transition:border-color .2s}
+.adv-card:hover{border-color:var(--accent)}
+.adv-card h4{font-size:.9rem;margin:8px 0 4px}
+.adv-card p{font-size:.8rem;color:var(--text2)}
+.exp-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:20px;margin-bottom:14px}
+.exp-header{display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;margin-bottom:4px}
+.exp-company{font-weight:700;color:var(--accent2)}
+.exp-date{font-size:.78rem;color:var(--text3);font-family:monospace}
+.exp-role{font-size:.84rem;color:var(--text2);margin-bottom:8px}
+.exp-details{list-style:none}
+.exp-details li{font-size:.82rem;color:var(--text2);padding:2px 0 2px 16px;position:relative}
+.exp-details li::before{content:'▸';position:absolute;left:0;color:var(--accent);font-size:.7rem;top:4px}
+.exp-reason{margin-top:10px;padding:10px 14px;background:rgba(251,191,36,.08);border-radius:6px;border-left:3px solid #fbbf24;font-size:.78rem;color:#fbbf24}
+.proj-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px}
+.proj-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:18px}
+.proj-card h4{font-size:.9rem;margin-bottom:4px}
+.proj-card p{font-size:.8rem;color:var(--text2)}
+.proj-tag{display:inline-block;margin-top:8px;padding:3px 10px;border-radius:12px;font-size:.72rem;background:rgba(88,166,255,.15);color:var(--accent);font-family:monospace}
+.edu-line{font-size:.88rem;color:var(--text2);padding:8px 0}
+.edu-line strong{color:var(--text)}
+.skill-groups{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px}
+.skill-group h4{font-size:.84rem;color:var(--accent2);margin-bottom:8px}
+.skill-tags{display:flex;flex-wrap:wrap;gap:6px}
+.skill-tag{padding:4px 10px;border-radius:4px;font-size:.76rem;background:var(--surface2);color:var(--text2);border:1px solid var(--border);font-family:monospace}
+.footer{text-align:center;padding:24px;color:var(--text3);font-size:.74rem;border-top:1px solid var(--border);margin-top:40px}
+@media print{body{background:#000;color:#fff}.exp-card,.adv-card,.proj-card{border-color:#333}}
+</style></head><body>
+<div class="header">
+  <div class="avatar">${d.avatar?`<img src="${d.avatar}" alt="">`:'<span>👤</span>'}</div>
+  <h1 class="name">${esc(d.basics.name||'未命名')}</h1>
+  <div class="meta">${[d.basics.title,d.basics.location,d.basics.salary?d.basics.salary+'K':''].filter(Boolean).map(x=>esc(x)).join(' · ')}</div>
+  <div class="contact">${[d.basics.phone?`📞 ${esc(d.basics.phone)}`:'' ,d.basics.email?`✉️ ${esc(d.basics.email)}`:'' ,d.basics.birth?`🎂 ${esc(d.basics.birth)}`:'' ,d.basics.status?`📌 ${esc(d.basics.status)}`:''].filter(Boolean).join('  ')}</div>
+</div>
+${(d.advantages||[]).length?`<div class="sec"><div class="sec-title">💪 核心优势</div><div class="adv-grid">${d.advantages.map(a=>`<div class="adv-card"><span style="font-size:1.3rem">${esc(a.icon||'✨')}</span><h4>${esc(a.title)}</h4><p>${esc(a.desc)}</p></div>`).join('')}</div></div>`:''}
+${(d.experiences||[]).length?`<div class="sec"><div class="sec-title">💼 工作经历</div>${d.experiences.map(e=>`<div class="exp-card"><div class="exp-header"><span class="exp-company">${esc(e.company)}</span><span class="exp-date">${esc(e.date)}</span></div><div class="exp-role">${esc(e.role)}</div><ul class="exp-details">${(e.details||[]).map(dd=>`<li>${esc(dd)}</li>`).join('')}</ul>${e.reason?`<div class="exp-reason">${esc(e.reason)}</div>`:''}</div>`).join('')}</div>`:''}
+${(d.projects||[]).length?`<div class="sec"><div class="sec-title">🚀 项目经验</div><div class="proj-row">${d.projects.map(p=>`<div class="proj-card"><h4>${esc(p.name)}</h4><p>${esc(p.desc)}</p><span class="proj-tag">${esc(p.tag)}</span></div>`).join('')}</div></div>`:''}
+${(d.portfolio||[]).length?`<div class="sec"><div class="sec-title">🖼️ 作品集</div><div class="proj-row">${d.portfolio.map(p=>`<div class="proj-card"><div style="aspect-ratio:1;margin-bottom:8px;border-radius:6px;overflow:hidden;background:var(--surface2)">${p.type==='video'||(p.src||'').startsWith('data:video/')?`<video src="${esc(p.src)}" controls preload="metadata" style="width:100%;height:100%;object-fit:cover;background:#000"></video>`:`<img src="${esc(p.src)}" alt="${esc(p.name)}" style="width:100%;height:100%;object-fit:cover" onerror="this.style.display='none'">`}</div><h4>${esc(p.name)}</h4></div>`).join('')}</div></div>`:''}
+${d.education.school?`<div class="sec"><div class="sec-title">🎓 教育背景</div><div class="edu-line"><strong>${esc(d.education.school)}</strong> · ${esc(d.education.major)} · ${esc(d.education.degree)} · ${esc(d.education.period)}</div></div>`:''}
+${(d.skills||[]).length?`<div class="sec"><div class="sec-title">🛠️ 技能</div><div class="skill-groups">${d.skills.map(s=>`<div class="skill-group"><h4>${esc(s.icon||'')} ${esc(s.category)}</h4><div class="skill-tags">${(s.items||[]).map(i=>`<span class="skill-tag">${esc(i)}</span>`).join('')}</div></div>`).join('')}</div></div>`:''}
+<footer class="footer">${esc(d.basics.name||'未命名')} · 个人简历</footer>
+</body></html>`;
+}
+
+/* ================================================================
+   TEMPLATE 3: 优雅侧边栏
+   ================================================================ */
+function renderElegantSidebar(d){
+  return `<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><title>${esc(d.basics.name||'未命名')} · 个人简历</title><style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{--bg:#faf8f5;--sidebar:#2c2c2e;--sidebar-text:#e8e4dd;--sidebar-text2:#a09b90;--text:#2c2c2e;--text2:#6b6560;--accent:#c8a05a;--border:#e6e0d8;--radius:6px;--font:"PingFang SC","Microsoft YaHei",system-ui,sans-serif;--font-serif:"Noto Serif SC",Georgia,serif}
+body{font-family:var(--font);background:var(--bg);display:flex;min-height:100vh}
+.sidebar{width:280px;min-width:280px;background:var(--sidebar);color:var(--sidebar-text);padding:40px 24px;display:flex;flex-direction:column;align-items:center;text-align:center;gap:24px}
+.sidebar-avatar{width:130px;height:130px;border-radius:50%;border:3px solid var(--accent);overflow:hidden;display:flex;align-items:center;justify-content:center;background:rgba(255,255,255,.05)}
+.sidebar-avatar img{width:100%;height:100%;object-fit:cover}
+.sidebar-avatar span{font-size:2.5rem;color:rgba(255,255,255,.15)}
+.sidebar-name{font-family:var(--font-serif);font-size:1.5rem;font-weight:700}
+.sidebar-title{font-size:.88rem;color:var(--accent);font-weight:500}
+.sidebar-info{font-size:.8rem;color:var(--sidebar-text2);line-height:2}
+.sidebar-info div{display:flex;align-items:center;justify-content:center;gap:6px}
+.sidebar-skills{width:100%}
+.sidebar-skills h4{font-family:var(--font-serif);font-size:.84rem;color:var(--accent);margin-bottom:8px;text-align:left}
+.sidebar-tags{display:flex;flex-wrap:wrap;gap:5px;justify-content:center}
+.sidebar-tag{font-size:.72rem;padding:3px 10px;border-radius:12px;background:rgba(255,255,255,.06);color:var(--sidebar-text2)}
+.main{flex:1;padding:40px 48px;overflow-y:auto}
+.main h2{font-family:var(--font-serif);font-size:1.3rem;font-weight:700;margin-bottom:20px;color:var(--text);border-bottom:2px solid var(--accent);padding-bottom:8px;display:flex;align-items:center;gap:8px}
+.exp-item{margin-bottom:24px;padding-bottom:20px;border-bottom:1px solid var(--border)}
+.exp-item:last-child{border-bottom:none}
+.exp-hd{display:flex;justify-content:space-between;flex-wrap:wrap;gap:6px;margin-bottom:2px}
+.exp-company{font-weight:700;font-size:1rem}
+.exp-date{font-size:.8rem;color:var(--text2)}
+.exp-role{font-size:.86rem;color:var(--accent);font-weight:600;margin-bottom:8px}
+.exp-ul{list-style:none}
+.exp-ul li{font-size:.82rem;color:var(--text2);padding:2px 0 2px 16px;position:relative}
+.exp-ul li::before{content:'—';position:absolute;left:0;color:var(--accent);font-size:.7rem;top:3px}
+.exp-reason{font-size:.78rem;color:var(--accent);font-style:italic;margin-top:6px}
+.adv-row{display:flex;flex-wrap:wrap;gap:12px;margin-bottom:24px}
+.adv-chip{display:flex;align-items:center;gap:6px;padding:8px 16px;background:#fff;border-radius:20px;border:1px solid var(--border);font-size:.82rem}
+.proj-item{margin-bottom:16px}
+.proj-item h4{font-size:.92rem;margin-bottom:2px}
+.proj-item p{font-size:.82rem;color:var(--text2)}
+.proj-item .tag{font-size:.72rem;color:var(--accent);font-weight:600}
+@media(max-width:680px){body{flex-direction:column}.sidebar{width:100%;min-width:100%;padding:24px}.main{padding:24px}}
+@media print{body{display:block}.sidebar{width:100%;background:#fff;color:#000;text-align:left;flex-direction:row;flex-wrap:wrap;gap:12px;padding:16px 0;page-break-after:avoid}.main{padding:0}}
+</style></head><body>
+<aside class="sidebar">
+  <div class="sidebar-avatar">${d.avatar?`<img src="${d.avatar}" alt="">`:'<span>👤</span>'}</div>
+  <div class="sidebar-name">${esc(d.basics.name||'未命名')}</div>
+  <div class="sidebar-title">${esc(d.basics.title||'')}</div>
+  <div class="sidebar-info">
+    ${d.basics.location?`<div>📍 ${esc(d.basics.location)}</div>`:''}
+    ${d.basics.phone?`<div>📞 ${esc(d.basics.phone)}</div>`:''}
+    ${d.basics.email?`<div>✉️ ${esc(d.basics.email)}</div>`:''}
+    ${d.basics.status?`<div>📌 ${esc(d.basics.status)}</div>`:''}
+  </div>
+  ${(d.skills||[]).length?`<div class="sidebar-skills"><h4>专业技能</h4><div class="sidebar-tags">${d.skills.flatMap(s=>s.items||[]).map(i=>`<span class="sidebar-tag">${esc(i)}</span>`).join('')}</div></div>`:''}
+  ${d.education.school?`<div style="font-size:.78rem;color:var(--sidebar-text2);margin-top:auto;text-align:center">🎓 ${esc(d.education.school)}<br>${esc(d.education.major)} · ${esc(d.education.degree)}</div>`:''}
+</aside>
+<main class="main">
+  ${(d.advantages||[]).length?`<div style="margin-bottom:32px"><h2>核心优势</h2><div class="adv-row">${d.advantages.map(a=>`<div class="adv-chip">${esc(a.icon||'')} ${esc(a.title)}</div>`).join('')}</div></div>`:''}
+  ${(d.experiences||[]).length?`<h2>💼 工作经历</h2>${d.experiences.map(e=>`<div class="exp-item"><div class="exp-hd"><span class="exp-company">${esc(e.company)}</span><span class="exp-date">${esc(e.date)}</span></div><div class="exp-role">${esc(e.role)}</div><ul class="exp-ul">${(e.details||[]).map(dd=>`<li>${esc(dd)}</li>`).join('')}</ul>${e.reason?`<div class="exp-reason">${esc(e.reason)}</div>`:''}</div>`).join('')}`:''}
+  ${(d.projects||[]).length?`<h2 style="margin-top:32px">🚀 项目经验</h2>${d.projects.map(p=>`<div class="proj-item"><h4>${esc(p.name)} <span class="tag">${esc(p.tag)}</span></h4><p>${esc(p.desc)}</p></div>`).join('')}`:''}
+  ${(d.portfolio||[]).length?`<h2 style="margin-top:32px">🖼️ 作品集</h2><div style="display:flex;flex-wrap:wrap;gap:12px">${d.portfolio.map(p=>`<div style="width:160px"><div style="aspect-ratio:1;border-radius:6px;overflow:hidden;border:1px solid var(--border);background:var(--bg)">${p.type==='video'||(p.src||'').startsWith('data:video/')?`<video src="${esc(p.src)}" controls preload="metadata" style="width:100%;height:100%;object-fit:cover;background:#000"></video>`:`<img src="${esc(p.src)}" alt="${esc(p.name)}" style="width:100%;height:100%;object-fit:cover" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">`}<div style="display:none;align-items:center;justify-content:center;height:100%;font-size:1.5rem;color:var(--text2)">🖼️</div></div><div style="font-size:.78rem;color:var(--text2);text-align:center;margin-top:4px">${esc(p.name)}</div></div>`).join('')}</div>`:''}
+</main>
+</body></html>`;
+}
+
+/* ================================================================
+   TEMPLATE 4: 时间轴叙事
+   ================================================================ */
+function renderTimelineNarrative(d){
+  return `<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><title>${esc(d.basics.name||'未命名')} · 个人简历</title><style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{--bg:#fefdfb;--text:#3d3226;--text2:#7a6e5e;--text3:#a89880;--accent:#c47e5a;--accent2:#8b5e3c;--border:#e8ddd0;--surface:#fff;--radius:8px;--font:system-ui,-apple-system,sans-serif}
+body{font-family:var(--font);background:var(--bg);color:var(--text);line-height:1.8;max-width:760px;margin:0 auto;padding:48px 24px}
+.header{text-align:center;margin-bottom:48px}
+.avatar{width:100px;height:100px;border-radius:50%;margin:0 auto 12px;overflow:hidden;border:3px solid var(--accent);display:flex;align-items:center;justify-content:center}
+.avatar img{width:100%;height:100%;object-fit:cover}
+.avatar span{font-size:2rem;color:var(--text3)}
+.name{font-size:2rem;font-weight:800;letter-spacing:1px}
+.meta{font-size:.88rem;color:var(--text2);margin:4px 0}
+.contact{font-size:.8rem;color:var(--text3);display:flex;flex-wrap:wrap;justify-content:center;gap:4px 14px}
+.section-title{font-size:1.2rem;font-weight:700;color:var(--accent2);margin:36px 0 16px;text-align:center}
+/* timeline */
+.timeline{position:relative;padding:0}
+.timeline::before{content:'';position:absolute;left:50%;top:0;bottom:0;width:3px;background:var(--accent);transform:translateX(-50%);border-radius:2px}
+.tl-item{position:relative;margin-bottom:36px;width:50%}
+.tl-item:nth-child(odd){padding-right:40px;text-align:right}
+.tl-item:nth-child(even){margin-left:50%;padding-left:40px}
+.tl-dot{position:absolute;top:4px;width:16px;height:16px;border-radius:50%;background:var(--accent);border:3px solid var(--bg);z-index:1}
+.tl-item:nth-child(odd) .tl-dot{right:-8px}
+.tl-item:nth-child(even) .tl-dot{left:-8px}
+.tl-card{background:var(--surface);border-radius:var(--radius);padding:18px 20px;border:1px solid var(--border);box-shadow:0 2px 8px rgba(0,0,0,.04)}
+.tl-company{font-weight:700}
+.tl-date{font-size:.76rem;color:var(--text3)}
+.tl-role{font-size:.84rem;color:var(--accent);font-weight:600}
+.tl-details{list-style:none;margin-top:6px}
+.tl-details li{font-size:.8rem;color:var(--text2);padding:1px 0}
+.tl-reason{font-size:.76rem;color:var(--accent);font-style:italic;margin-top:6px}
+.adv-grid{display:flex;flex-wrap:wrap;gap:10px;justify-content:center}
+.adv-card{background:var(--surface);border-radius:20px;padding:10px 18px;border:1px solid var(--border);font-size:.84rem;display:flex;align-items:center;gap:6px}
+.proj-card{background:var(--surface);border-radius:var(--radius);padding:18px;border:1px solid var(--border);margin-bottom:12px;text-align:center}
+.proj-card h4{font-size:.95rem}
+.proj-card p{font-size:.82rem;color:var(--text2)}
+.proj-tag{font-size:.72rem;color:var(--accent);font-weight:600;margin-top:4px}
+.skills-row{display:flex;flex-wrap:wrap;gap:8px;justify-content:center}
+.skill-tag{padding:5px 14px;border-radius:16px;font-size:.8rem;background:var(--bg);border:1px solid var(--border);color:var(--text2)}
+.edu-block{text-align:center;font-size:.88rem;color:var(--text2)}
+.footer{text-align:center;margin-top:40px;padding-top:20px;border-top:1px solid var(--border);font-size:.76rem;color:var(--text3)}
+@media(max-width:600px){
+  .timeline::before{left:16px}
+  .tl-item{width:100%;margin-left:0!important;padding-left:40px!important;padding-right:0!important;text-align:left!important}
+  .tl-item .tl-dot{left:-8px!important;right:auto!important}
+}
+@media print{body{background:#fff}}
+</style></head><body>
+<header class="header">
+  <div class="avatar">${d.avatar?`<img src="${d.avatar}" alt="">`:'<span>👤</span>'}</div>
+  <h1 class="name">${esc(d.basics.name||'未命名')}</h1>
+  <div class="meta">${[d.basics.title,d.basics.location,d.basics.status].filter(Boolean).map(x=>esc(x)).join(' · ')}</div>
+  <div class="contact">${[d.basics.phone?`📞 ${esc(d.basics.phone)}`:'' ,d.basics.email?`✉️ ${esc(d.basics.email)}`:'' ,d.basics.birth?`🎂 ${esc(d.basics.birth)}`:''].filter(Boolean).join('  ')}</div>
+</header>
+${(d.advantages||[]).length?`<div class="adv-grid">${d.advantages.map(a=>`<div class="adv-card">${esc(a.icon||'')} ${esc(a.title)}</div>`).join('')}</div>`:''}
+${(d.experiences||[]).length?`<div class="section-title">📜 职业旅程</div><div class="timeline">${d.experiences.map(e=>`<div class="tl-item"><div class="tl-dot"></div><div class="tl-card"><div class="tl-company">${esc(e.company)}</div><div class="tl-date">${esc(e.date)}</div><div class="tl-role">${esc(e.role)}</div><ul class="tl-details">${(e.details||[]).map(dd=>`<li>${esc(dd)}</li>`).join('')}</ul>${e.reason?`<div class="tl-reason">${esc(e.reason)}</div>`:''}</div></div>`).join('')}</div>`:''}
+${(d.projects||[]).length?`<div class="section-title">🚀 项目</div>${d.projects.map(p=>`<div class="proj-card"><h4>${esc(p.name)}</h4><p>${esc(p.desc)}</p><div class="proj-tag">${esc(p.tag)}</div></div>`).join('')}`:''}
+${(d.portfolio||[]).length?`<div class="section-title">🖼️ 作品集</div><div class="adv-grid">${d.portfolio.map(p=>`<div style="text-align:center"><div style="width:140px;height:140px;border-radius:12px;overflow:hidden;margin:0 auto 4px;border:2px solid var(--border)">${p.type==='video'||(p.src||'').startsWith('data:video/')?`<video src="${esc(p.src)}" controls preload="metadata" style="width:100%;height:100%;object-fit:cover;background:#000"></video>`:`<img src="${esc(p.src)}" alt="${esc(p.name)}" style="width:100%;height:100%;object-fit:cover" onerror="this.style.display='none'">`}</div><div style="font-size:.78rem;color:var(--text2)">${esc(p.name)}</div></div>`).join('')}</div>`:''}
+${d.education.school?`<div class="section-title">🎓 教育</div><div class="edu-block"><strong>${esc(d.education.school)}</strong> · ${esc(d.education.major)} · ${esc(d.education.degree)} · ${esc(d.education.period)}</div>`:''}
+${(d.skills||[]).length?`<div class="section-title">🛠️ 技能</div><div class="skills-row">${d.skills.flatMap(s=>s.items||[]).map(i=>`<span class="skill-tag">${esc(i)}</span>`).join('')}</div>`:''}
+<footer class="footer">${esc(d.basics.name||'未命名')} · 个人简历</footer>
+</body></html>`;
+}
+
+/* ================================================================
+   TEMPLATE 5: 清新自然
+   ================================================================ */
+function renderFreshNatural(d){
+  return `<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><title>${esc(d.basics.name||'未命名')} · 个人简历</title><style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{--bg:#f0f7f4;--surface:#fff;--text:#1a2e1f;--text2:#4a6b50;--text3:#7a987e;--accent:#2d8a6e;--accent-light:#e8f5ee;--accent2:#1e6b52;--border:#d4e5da;--shadow:0 4px 20px rgba(0,0,0,.05);--radius:16px;--font:"PingFang SC","Microsoft YaHei",system-ui,sans-serif}
+body{font-family:var(--font);background:var(--bg);color:var(--text);line-height:1.7;padding:32px 24px}
+.wrap{max-width:960px;margin:0 auto;display:grid;grid-template-columns:300px 1fr;gap:24px}
+.card{background:var(--surface);border-radius:var(--radius);padding:28px;box-shadow:var(--shadow);border:1px solid var(--border)}
+.photo-card{text-align:center}
+.avatar{width:110px;height:110px;border-radius:50%;margin:0 auto 12px;overflow:hidden;border:3px solid var(--accent);display:flex;align-items:center;justify-content:center}
+.avatar img{width:100%;height:100%;object-fit:cover}
+.avatar span{font-size:2rem;color:var(--text3)}
+.name{font-size:1.5rem;font-weight:800}
+.title{color:var(--accent);font-size:.88rem;font-weight:600;margin:2px 0 8px}
+.info-row{font-size:.8rem;color:var(--text2);margin:3px 0}
+.section-title{font-size:1.05rem;font-weight:700;color:var(--accent);margin-bottom:14px;display:flex;align-items:center;gap:6px}
+.adv-card{background:var(--accent-light);border-radius:12px;padding:14px 16px;margin-bottom:8px}
+.adv-card h4{font-size:.86rem;display:flex;align-items:center;gap:6px}
+.adv-card p{font-size:.78rem;color:var(--text2)}
+.exp-card{background:var(--surface);border-radius:12px;padding:20px;margin-bottom:14px;border:1px solid var(--border);border-left:4px solid var(--accent)}
+.exp-hd{display:flex;justify-content:space-between;flex-wrap:wrap;gap:6px}
+.exp-company{font-weight:700}
+.exp-date{font-size:.76rem;color:var(--text3)}
+.exp-role{font-size:.84rem;color:var(--accent);font-weight:600}
+.exp-ul{list-style:none;margin-top:6px}
+.exp-ul li{font-size:.8rem;color:var(--text2);padding:1px 0 1px 14px;position:relative}
+.exp-ul li::before{content:'🌱';position:absolute;left:0;font-size:.6rem;top:4px}
+.exp-reason{font-size:.76rem;color:var(--accent);margin-top:6px;font-style:italic}
+.proj-card{background:var(--surface);border-radius:12px;padding:16px;margin-bottom:10px;border:1px solid var(--border)}
+.proj-card h4{font-size:.9rem;margin-bottom:2px}
+.proj-card p{font-size:.8rem;color:var(--text2)}
+.proj-badge{display:inline-block;margin-top:6px;padding:3px 10px;border-radius:12px;background:var(--accent-light);color:var(--accent);font-size:.72rem;font-weight:600}
+.skill-tags{display:flex;flex-wrap:wrap;gap:6px}
+.skill-tag{padding:5px 12px;border-radius:14px;font-size:.78rem;background:var(--accent-light);color:var(--accent);font-weight:500}
+.edu-line{font-size:.84rem;color:var(--text2);padding:4px 0}
+.footer{grid-column:1/-1;text-align:center;font-size:.76rem;color:var(--text3);padding-top:16px}
+@media(max-width:720px){.wrap{grid-template-columns:1fr}}
+@media print{body{background:#fff}.card{box-shadow:none;border-color:#ddd;page-break-inside:avoid}}
+</style></head><body>
+<div class="wrap">
+  <div class="card photo-card">
+    <div class="avatar">${d.avatar?`<img src="${d.avatar}" alt="">`:'<span>👤</span>'}</div>
+    <div class="name">${esc(d.basics.name||'未命名')}</div>
+    <div class="title">${esc(d.basics.title||'')}</div>
+    ${d.basics.location?`<div class="info-row">📍 ${esc(d.basics.location)}${d.basics.status?' · '+esc(d.basics.status):''}</div>`:''}
+    ${d.basics.phone?`<div class="info-row">📞 ${esc(d.basics.phone)}</div>`:''}
+    ${d.basics.email?`<div class="info-row">✉️ ${esc(d.basics.email)}</div>`:''}
+    ${d.basics.birth?`<div class="info-row">🎂 ${esc(d.basics.birth)}</div>`:''}
+    ${(d.portfolio||[]).length?`<div style="margin-top:16px;padding-top:16px;border-top:1px solid var(--border)"><div class="section-title" style="font-size:.9rem">🖼️ 作品集</div><div style="display:flex;flex-wrap:wrap;gap:6px">${d.portfolio.map(p=>`<div style="width:80px;text-align:center"><div style="aspect-ratio:1;border-radius:8px;overflow:hidden;border:1px solid var(--border)">${p.type==='video'||(p.src||'').startsWith('data:video/')?`<video src="${esc(p.src)}" controls preload="metadata" style="width:100%;height:100%;object-fit:cover;background:#000"></video>`:`<img src="${esc(p.src)}" alt="${esc(p.name)}" style="width:100%;height:100%;object-fit:cover" onerror="this.style.display='none'">`}</div><div style="font-size:.68rem;color:var(--text2);margin-top:2px;line-height:1.2">${esc(p.name)}</div></div>`).join('')}</div></div>`:''}
+${d.education.school?`<div style="margin-top:16px;padding-top:16px;border-top:1px solid var(--border)"><div class="section-title" style="font-size:.9rem">🎓 教育</div><div class="edu-line"><strong>${esc(d.education.school)}</strong></div><div class="edu-line">${esc(d.education.major)}</div><div class="edu-line">${esc(d.education.degree)} · ${esc(d.education.period)}</div></div>`:''}
+    ${(d.skills||[]).length?`<div style="margin-top:16px;padding-top:16px;border-top:1px solid var(--border)"><div class="section-title" style="font-size:.9rem">🛠️ 技能</div><div class="skill-tags">${d.skills.flatMap(s=>s.items||[]).map(i=>`<span class="skill-tag">${esc(i)}</span>`).join('')}</div></div>`:''}
+  </div>
+  <div>
+    ${(d.advantages||[]).length?`<div class="section-title">💪 核心优势</div>${d.advantages.map(a=>`<div class="adv-card"><h4>${esc(a.icon||'✨')} ${esc(a.title)}</h4><p>${esc(a.desc)}</p></div>`).join('')}<div style="height:24px"></div>`:''}
+    ${(d.experiences||[]).length?`<div class="section-title">💼 工作经历</div>${d.experiences.map(e=>`<div class="exp-card"><div class="exp-hd"><span class="exp-company">${esc(e.company)}</span><span class="exp-date">${esc(e.date)}</span></div><div class="exp-role">${esc(e.role)}</div><ul class="exp-ul">${(e.details||[]).map(dd=>`<li>${esc(dd)}</li>`).join('')}</ul>${e.reason?`<div class="exp-reason">${esc(e.reason)}</div>`:''}</div>`).join('')}<div style="height:24px"></div>`:''}
+    ${(d.projects||[]).length?`<div class="section-title">🚀 项目经验</div>${d.projects.map(p=>`<div class="proj-card"><h4>${esc(p.name)}</h4><p>${esc(p.desc)}</p><span class="proj-badge">${esc(p.tag)}</span></div>`).join('')}`:''}
+  </div>
+  <footer class="footer">${esc(d.basics.name||'未命名')} · 个人简历</footer>
+</div>
+</body></html>`;
+}
+
+/* ================================================================
+   SHARED: Hero builder for template 1
+   ================================================================ */
+function buildHero(d){
+  return `<header class="hero"><div class="hero-inner">
+    <div class="hero-avatar">${d.avatar?`<img src="${d.avatar}" alt="">`:'<span>👤</span>'}</div>
+    <div>
+      <h1 class="hero-name">${esc(d.basics.name||'未命名')}</h1>
+      <div class="hero-meta">${[d.basics.title?esc(d.basics.title):'',d.basics.location?esc(d.basics.location):'',d.basics.salary?esc(d.basics.salary)+'K':'',d.basics.status?esc(d.basics.status):''].filter(Boolean).join(' · ')}</div>
+      <div class="hero-contact">
+        ${d.basics.phone?`<span>📞 ${esc(d.basics.phone)}</span>`:''}
+        ${d.basics.email?`<span>✉️ ${esc(d.basics.email)}</span>`:''}
+        ${d.education.school?`<span>🎓 ${esc(d.education.school)} · ${esc(d.education.degree)}</span>`:''}
+        ${d.basics.birth?`<span>📅 ${esc(d.basics.birth)}</span>`:''}
+      </div>
+    </div>
+  </div></header>`;
+}
+
+/* ================================================================
+   RENDER PREVIEW
+   ================================================================ */
+function renderPreview(){
+  const iframe = document.getElementById('previewFrame');
+  const tpl = getCurrentTemplate();
+  iframe.srcdoc = tpl.render(resumeData);
+}
+
+/* ================================================================
+   BUILD FORM
+   ================================================================ */
+function buildAllForms(){
+  buildBasicsForm();
+  buildAdvantagesForm();
+  buildExperiencesForm();
+  buildProjectsForm();
+  buildPortfolioForm();
+  buildEducationForm();
+  buildSkillsForm();
+  updateTemplateTabs();
+  document.getElementById('fileNameInput').value = resumeData.fileName || '我的简历';
+}
+
+function buildBasicsForm(){
+  const b = resumeData.basics;
+  const container = document.getElementById('formBasics');
+  container.innerHTML = `
+    <div class="avatar-upload-area">
+      <div class="avatar-preview" onclick="document.getElementById('avatarFileInput').click()" title="点击上传照片">
+        ${resumeData.avatar ? `<img src="${resumeData.avatar}" alt="">` : '👤'}
+      </div>
+      <span class="avatar-hint">点击上传照片（保存为base64）</span>
+      <input type="file" accept="image/*" id="avatarFileInput" style="display:none" onchange="handleAvatarUpload(event)">
+    </div>
+    <div class="form-row">
+      <input placeholder="姓名*" value="${escAttr(b.name)}" oninput="updateBasic('name',this.value)">
+      <input placeholder="目标职位" value="${escAttr(b.title)}" oninput="updateBasic('title',this.value)">
+    </div>
+    <div class="form-row">
+      <input placeholder="城市" value="${escAttr(b.location)}" oninput="updateBasic('location',this.value)">
+      <input placeholder="期望薪资" value="${escAttr(b.salary)}" oninput="updateBasic('salary',this.value)">
+    </div>
+    <div class="form-row">
+      <input placeholder="到岗状态" value="${escAttr(b.status)}" oninput="updateBasic('status',this.value)">
+      <input placeholder="出生年月" value="${escAttr(b.birth)}" oninput="updateBasic('birth',this.value)">
+    </div>
+    <div class="form-row">
+      <input placeholder="手机号" value="${escAttr(b.phone)}" oninput="updateBasic('phone',this.value)">
+      <input placeholder="邮箱" value="${escAttr(b.email)}" oninput="updateBasic('email',this.value)">
+    </div>
+  `;
+}
+
+function updateBasic(field, value){
+  resumeData.basics[field] = value;
+  debouncePreview();
+}
+
+function handleAvatarUpload(e){
+  const file = e.target.files[0];
+  if(!file) return;
+  const reader = new FileReader();
+  reader.onload = function(ev){
+    const img = new Image();
+    img.onload = function(){
+      const canvas = document.createElement('canvas');
+      const maxW = 300;
+      const scale = Math.min(1, maxW/img.width);
+      canvas.width = img.width*scale;
+      canvas.height = img.height*scale;
+      canvas.getContext('2d').drawImage(img,0,0,canvas.width,canvas.height);
+      resumeData.avatar = canvas.toDataURL('image/jpeg',0.8);
+      saveData();
+      buildBasicsForm();
+    };
+    img.src = ev.target.result;
+  };
+  reader.readAsDataURL(file);
+}
+
+function buildAdvantagesForm(){
+  const container = document.getElementById('formAdvantages');
+  let html = '<div class="dynamic-list">';
+  (resumeData.advantages||[]).forEach((a,i)=>{
+    html += `<div class="dynamic-item">
+      <button class="remove-btn" onclick="removeAdvantage(${i})">✕</button>
+      <div class="form-row">
+        <input placeholder="图标emoji" value="${escAttr(a.icon||'')}" style="width:60px;flex:none" oninput="updateAdvantage(${i},'icon',this.value)">
+        <input placeholder="标题" value="${escAttr(a.title||'')}" oninput="updateAdvantage(${i},'title',this.value)">
+      </div>
+      <input placeholder="描述" value="${escAttr(a.desc||'')}" style="width:100%;margin-top:4px" oninput="updateAdvantage(${i},'desc',this.value)">
+    </div>`;
+  });
+  html += '</div><button class="add-btn" onclick="addAdvantage()">+ 添加优势</button>';
+  container.innerHTML = html;
+}
+
+function addAdvantage(){
+  if(!resumeData.advantages) resumeData.advantages = [];
+  resumeData.advantages.push({icon:'✨',title:'',desc:''});
+  saveData();
+  buildAdvantagesForm();
+}
+function removeAdvantage(i){
+  resumeData.advantages.splice(i,1);
+  saveData();
+  buildAdvantagesForm();
+}
+function updateAdvantage(i,field,value){
+  resumeData.advantages[i][field] = value;
+  debouncePreview();
+}
+
+function buildExperiencesForm(){
+  const container = document.getElementById('formExperiences');
+  let html = '<div class="dynamic-list">';
+  (resumeData.experiences||[]).forEach((e,i)=>{
+    html += `<div class="dynamic-item">
+      <button class="remove-btn" onclick="removeExperience(${i})">✕</button>
+      <div class="form-row">
+        <input placeholder="公司" value="${escAttr(e.company||'')}" oninput="updateExperience(${i},'company',this.value)">
+        <input placeholder="职位" value="${escAttr(e.role||'')}" oninput="updateExperience(${i},'role',this.value)">
+      </div>
+      <input placeholder="时间 (如: 2026.02-2026.05)" value="${escAttr(e.date||'')}" style="width:100%;margin-bottom:4px" oninput="updateExperience(${i},'date',this.value)">
+      <textarea placeholder="工作内容（每行一条）" oninput="updateExperience(${i},'details',this.value)">${esc((e.details||[]).join('\n'))}</textarea>
+      <input placeholder="离职原因（可选）" value="${escAttr(e.reason||'')}" style="width:100%;margin-top:4px" oninput="updateExperience(${i},'reason',this.value)">
+    </div>`;
+  });
+  html += '</div><button class="add-btn" onclick="addExperience()">+ 添加经历</button>';
+  container.innerHTML = html;
+}
+
+function addExperience(){
+  if(!resumeData.experiences) resumeData.experiences = [];
+  resumeData.experiences.push({company:'',role:'',date:'',details:[],reason:''});
+  saveData();
+  buildExperiencesForm();
+}
+function removeExperience(i){
+  resumeData.experiences.splice(i,1);
+  saveData();
+  buildExperiencesForm();
+}
+function updateExperience(i,field,value){
+  if(field==='details') resumeData.experiences[i].details = value.split('\n').filter(l=>l.trim());
+  else resumeData.experiences[i][field] = value;
+  debouncePreview();
+}
+
+function buildProjectsForm(){
+  const container = document.getElementById('formProjects');
+  let html = '<div class="dynamic-list">';
+  (resumeData.projects||[]).forEach((p,i)=>{
+    html += `<div class="dynamic-item">
+      <button class="remove-btn" onclick="removeProject(${i})">✕</button>
+      <input placeholder="项目名称" value="${escAttr(p.name||'')}" style="width:100%" oninput="updateProject(${i},'name',this.value)">
+      <textarea placeholder="项目描述" style="margin-top:4px" oninput="updateProject(${i},'desc',this.value)">${esc(p.desc||'')}</textarea>
+      <input placeholder="标签" value="${escAttr(p.tag||'')}" style="width:100%;margin-top:4px" oninput="updateProject(${i},'tag',this.value)">
+    </div>`;
+  });
+  html += '</div><button class="add-btn" onclick="addProject()">+ 添加项目</button>';
+  container.innerHTML = html;
+}
+
+function addProject(){
+  if(!resumeData.projects) resumeData.projects = [];
+  resumeData.projects.push({name:'',desc:'',tag:''});
+  saveData();
+  buildProjectsForm();
+}
+function removeProject(i){
+  resumeData.projects.splice(i,1);
+  saveData();
+  buildProjectsForm();
+}
+function updateProject(i,field,value){
+  resumeData.projects[i][field] = value;
+  debouncePreview();
+}
+function buildPortfolioForm(){
+  const container = document.getElementById('formPortfolio');
+  let html = '<div class="dynamic-list">';
+  (resumeData.portfolio||[]).forEach((p,i)=>{
+    const isVideo = p.type === 'video' || (p.src && p.src.startsWith('data:video/'));
+    html += '<div class="dynamic-item">' +
+      '<button class="remove-btn" onclick="removePortfolio('+i+')">✕</button>' +
+      '<div style="display:flex;gap:6px;align-items:center;margin-bottom:4px">' +
+        '<input placeholder="作品名称" value="' + escAttr(p.name||'') + '" style="flex:1" oninput="updatePortfolio('+i+',\'name\',this.value)">' +
+        '<select style="padding:6px 8px;border-radius:6px;border:1.5px solid var(--ed-border);font-size:.78rem;background:var(--ed-bg);font-family:var(--ed-font)" onchange="updatePortfolio('+i+',\'type\',this.value)">' +
+          '<option value="image"'+(isVideo?'':' selected')+'>图片</option>' +
+          '<option value="video"'+(isVideo?' selected':'')+'>视频</option>' +
+        '</select>' +
+      '</div>' +
+      '<div style="display:flex;gap:8px;align-items:center">' +
+        '<input placeholder="图片/视频链接或粘贴data URL" value="' + escAttr(p.src||'') + '" style="flex:1;font-size:.78rem" oninput="updatePortfolio('+i+',\'src\',this.value)">' +
+        '<label style="cursor:pointer;padding:6px 10px;border-radius:6px;border:1.5px solid var(--ed-border);font-size:.78rem;white-space:nowrap;background:var(--ed-bg)">📁 上传<input type="file" accept="image/*,video/*" style="display:none" onchange="handlePortUpload(event,'+i+')"></label>' +
+      '</div>' +
+      (p.src ? '<div style="margin-top:6px;text-align:center">'+(isVideo
+        ? '<video src="'+escAttr(p.src)+'" controls style="max-width:200px;max-height:120px;border-radius:6px" preload="metadata"></video>'
+        : '<img src="'+escAttr(p.src)+'" style="max-width:200px;max-height:120px;border-radius:6px;object-fit:cover" onerror="this.style.display=\'none\'">'
+      )+'</div>' : '') +
+    '</div>';
+  });
+  html += '</div>' +
+    '<div style="display:flex;gap:6px;margin-top:4px">' +
+      '<button class="add-btn" onclick="addPortfolio()">+ 单个作品</button>' +
+      '<button class="add-btn" onclick="openBatchPortfolio()">🖼️ 批量选文件（图片+视频）</button>' +
+      '<button class="add-btn" onclick="openFolderPortfolio()">📁 上传整个文件夹</button>' +
+    '</div>';
+  container.innerHTML = html;
+}
+
+/* ============ Batch Portfolio Upload for DIY ============ */
+let _diyPendingFiles = [];
+function openBatchPortfolio(){
+  // Create a one-time file input for batch upload
+  const input = document.createElement('input');
+  input.type = 'file';
+  input.accept = 'image/*,video/*';
+  input.multiple = true;
+  input.style.display = 'none';
+  input.onchange = async function(e){
+    const files = Array.from(e.target.files || []);
+    if(!files.length) return;
+    if(!resumeData.portfolio) resumeData.portfolio = [];
+
+    for(const file of files){
+      const isVideo = file.type.startsWith('video/');
+      const base64 = await fileToBase64DIY(file);
+      let poster = '';
+      if(isVideo){
+        try{ poster = await generateVideoThumbnailDIY(base64); }catch(e){}
+      }
+      resumeData.portfolio.push({
+        name: file.name.replace(/\.[^.]+$/, ''),
+        src: isVideo ? base64 : await compressImageDIY(base64, 600),
+        type: isVideo ? 'video' : 'image',
+        poster: poster
+      });
+    }
+    saveData();
+    buildPortfolioForm();
+    toast('✅ 已添加 ' + files.length + ' 个作品');
+  };
+  document.body.appendChild(input);
+  input.click();
+  setTimeout(() => document.body.removeChild(input), 5000);
+}
+
+// Also support folder upload
+function openFolderPortfolio(){
+  const input = document.createElement('input');
+  input.type = 'file';
+  input.accept = 'image/*,video/*';
+  input.webkitdirectory = true;
+  input.style.display = 'none';
+  input.onchange = async function(e){
+    const files = Array.from(e.target.files || []);
+    if(!files.length) return;
+    if(!resumeData.portfolio) resumeData.portfolio = [];
+    // Limit to 50 files
+    const limited = files.slice(0, 50);
+    for(const file of limited){
+      const isVideo = file.type.startsWith('video/');
+      const base64 = await fileToBase64DIY(file);
+      let poster = '';
+      if(isVideo){
+        try{ poster = await generateVideoThumbnailDIY(base64); }catch(e){}
+      }
+      resumeData.portfolio.push({
+        name: file.name.replace(/\.[^.]+$/, ''),
+        src: isVideo ? base64 : await compressImageDIY(base64, 600),
+        type: isVideo ? 'video' : 'image',
+        poster: poster
+      });
+    }
+    saveData();
+    buildPortfolioForm();
+    toast('✅ 已添加 ' + limited.length + ' 个作品' + (files.length > 50 ? '（截取前50个）' : ''));
+  };
+  document.body.appendChild(input);
+  input.click();
+  setTimeout(() => document.body.removeChild(input), 5000);
+}
+
+function fileToBase64DIY(file){
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = e => resolve(e.target.result);
+    reader.onerror = reject;
+    reader.readAsDataURL(file);
+  });
+}
+
+function compressImageDIY(dataUrl, maxW){
+  return new Promise((resolve, reject) => {
+    const img = new Image();
+    img.onload = function(){
+      const canvas = document.createElement('canvas');
+      const scale = Math.min(1, maxW / img.width);
+      canvas.width = img.width * scale;
+      canvas.height = img.height * scale;
+      canvas.getContext('2d').drawImage(img, 0, 0, canvas.width, canvas.height);
+      resolve(canvas.toDataURL('image/jpeg', 0.8));
+    };
+    img.onerror = reject;
+    img.src = dataUrl;
+  });
+}
+
+function generateVideoThumbnailDIY(dataUrl){
+  return new Promise((resolve) => {
+    const video = document.createElement('video');
+    video.preload = 'metadata';
+    video.muted = true;
+    video.playsInline = true;
+    video.currentTime = 1;
+    video.onloadeddata = function(){ video.currentTime = 1; };
+    video.onseeked = function(){
+      try{
+        const canvas = document.createElement('canvas');
+        canvas.width = video.videoWidth || 320;
+        canvas.height = video.videoHeight || 180;
+        const scale = Math.min(1, 200 / canvas.width);
+        canvas.width *= scale;
+        canvas.height *= scale;
+        canvas.getContext('2d').drawImage(video, 0, 0, canvas.width, canvas.height);
+        resolve(canvas.toDataURL('image/jpeg', 0.7));
+      }catch(e){ resolve(''); }
+    };
+    video.onerror = () => resolve('');
+    video.src = dataUrl;
+    setTimeout(() => resolve(''), 3000);
+  });
+}
+
+function addPortfolio(){
+  if(!resumeData.portfolio) resumeData.portfolio = [];
+  resumeData.portfolio.push({name:'',src:'',type:'image',poster:''});
+  saveData();
+  buildPortfolioForm();
+}
+function removePortfolio(i){
+  resumeData.portfolio.splice(i,1);
+  saveData();
+  buildPortfolioForm();
+}
+function updatePortfolio(i,field,value){
+  resumeData.portfolio[i][field] = value;
+  debouncePreview();
+}
+function handlePortUpload(e,i){
+  const file = e.target.files[0];
+  if(!file) return;
+  const isVideo = file.type.startsWith('video/');
+  const reader = new FileReader();
+  reader.onload = async function(ev){
+    if(isVideo){
+      // Video - store as base64, generate thumbnail
+      let poster = '';
+      try{ poster = await generateVideoThumbnailDIY(ev.target.result); }catch(e){}
+      resumeData.portfolio[i].src = ev.target.result;
+      resumeData.portfolio[i].type = 'video';
+      resumeData.portfolio[i].poster = poster;
+      if(!resumeData.portfolio[i].name) resumeData.portfolio[i].name = file.name.replace(/\.[^.]+$/, '');
+      saveData();
+      buildPortfolioForm();
+    }else{
+      const img = new Image();
+      img.onload = function(){
+        const canvas = document.createElement('canvas');
+        const maxW = 400;
+        const scale = Math.min(1, maxW/img.width);
+        canvas.width = img.width*scale;
+        canvas.height = img.height*scale;
+        canvas.getContext('2d').drawImage(img,0,0,canvas.width,canvas.height);
+        resumeData.portfolio[i].src = canvas.toDataURL('image/jpeg',0.8);
+        resumeData.portfolio[i].type = 'image';
+        if(!resumeData.portfolio[i].name) resumeData.portfolio[i].name = file.name.replace(/\.[^.]+$/, '');
+        saveData();
+        buildPortfolioForm();
+      };
+      img.src = ev.target.result;
+    }
+  };
+  reader.readAsDataURL(file);
+}
+
+
+function buildEducationForm(){
+  const e = resumeData.education;
+  const container = document.getElementById('formEducation');
+  container.innerHTML = `
+    <div class="form-row">
+      <input placeholder="学校" value="${escAttr(e.school||'')}" oninput="updateEducation('school',this.value)">
+      <input placeholder="专业" value="${escAttr(e.major||'')}" oninput="updateEducation('major',this.value)">
+    </div>
+    <div class="form-row">
+      <input placeholder="学历" value="${escAttr(e.degree||'')}" oninput="updateEducation('degree',this.value)">
+      <input placeholder="时间段" value="${escAttr(e.period||'')}" oninput="updateEducation('period',this.value)">
+    </div>
+  `;
+}
+
+function updateEducation(field,value){
+  resumeData.education[field] = value;
+  debouncePreview();
+}
+
+function buildSkillsForm(){
+  const container = document.getElementById('formSkills');
+  let html = '<div class="dynamic-list">';
+  (resumeData.skills||[]).forEach((s,i)=>{
+    html += `<div class="dynamic-item">
+      <button class="remove-btn" onclick="removeSkill(${i})">✕</button>
+      <div class="form-row">
+        <input placeholder="图标" value="${escAttr(s.icon||'')}" style="width:60px;flex:none" oninput="updateSkill(${i},'icon',this.value)">
+        <input placeholder="分类名" value="${escAttr(s.category||'')}" oninput="updateSkill(${i},'category',this.value)">
+      </div>
+      <input placeholder="技能标签（逗号分隔）" value="${escAttr((s.items||[]).join(','))}" style="width:100%;margin-top:4px" oninput="updateSkill(${i},'items',this.value)">
+    </div>`;
+  });
+  html += '</div><button class="add-btn" onclick="addSkill()">+ 添加技能分类</button>';
+  container.innerHTML = html;
+}
+
+function addSkill(){
+  if(!resumeData.skills) resumeData.skills = [];
+  resumeData.skills.push({icon:'📌',category:'',items:[]});
+  saveData();
+  buildSkillsForm();
+}
+function removeSkill(i){
+  resumeData.skills.splice(i,1);
+  saveData();
+  buildSkillsForm();
+}
+function updateSkill(i,field,value){
+  if(field==='items') resumeData.skills[i].items = value.split(/[,，]/).map(s=>s.trim()).filter(Boolean);
+  else resumeData.skills[i][field] = value;
+  debouncePreview();
+}
+
+/* ================================================================
+   TEMPLATE TABS
+   ================================================================ */
+function updateTemplateTabs(){
+  const container = document.getElementById('templateTabs');
+  container.innerHTML = TEMPLATES.map(t=>`
+    <button class="template-btn${t.id===resumeData.templateId?' active':''}" onclick="selectTemplate('${t.id}')">${t.icon} ${t.name}</button>
+  `).join('');
+}
+
+function selectTemplate(id){
+  resumeData.templateId = id;
+  saveData();
+  updateTemplateTabs();
+  renderPreview();
+}
+
+/* ================================================================
+   ACCORDION
+   ================================================================ */
+function toggleAccordion(id){
+  document.getElementById(id).classList.toggle('open');
+}
+
+/* ================================================================
+   FILE NAME
+   ================================================================ */
+function onFileNameChange(){
+  resumeData.fileName = document.getElementById('fileNameInput').value.trim() || '我的简历';
+  saveData();
+}
+
+/* ================================================================
+   EXPORT: HTML
+   ================================================================ */
+function exportHTML(){
+  const tpl = getCurrentTemplate();
+  const html = tpl.render(resumeData);
+  const blob = new Blob([html], {type:'text/html;charset=utf-8'});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = (resumeData.fileName||'我的简历') + '.html';
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+  toast('✅ HTML简历已导出！');
+}
+
+/* ================================================================
+   EXPORT: PDF (via print)
+   ================================================================ */
+function exportPDF(){
+  const iframe = document.getElementById('previewFrame');
+  const win = window.open('', '_blank', 'width=900,height=700');
+  win.document.write(iframe.srcdoc);
+  win.document.close();
+  win.focus();
+  setTimeout(()=>{
+    win.print();
+    toast('💡 在打印对话框中选择"另存为PDF"即可');
+  }, 500);
+}
+
+/* ================================================================
+   CLEAR ALL
+   ================================================================ */
+function clearAll(){
+  if(!confirm('确定清空所有内容吗？此操作不可恢复。')) return;
+  resumeData = JSON.parse(JSON.stringify(EMPTY_DATA));
+  saveData();
+  buildAllForms();
+  renderPreview();
+  toast('🗑️ 已清空');
+}
+
+/* ================================================================
+   UTILITY
+   ================================================================ */
+function esc(s){
+  if(!s) return '';
+  const d = document.createElement('div');
+  d.textContent = s;
+  return d.innerHTML;
+}
+
+function escAttr(s){
+  if(!s) return '';
+  return s.replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+
+function toast(msg){
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  clearTimeout(t._timeout);
+  t._timeout = setTimeout(()=>t.classList.remove('show'), 2200);
+}
+
+/* ================================================================
+   KEYBOARD SHORTCUTS
+   ================================================================ */
+document.addEventListener('keydown',function(e){
+  if((e.ctrlKey||e.metaKey) && e.key==='s'){
+    e.preventDefault();
+    saveData();
+    toast('💾 已自动保存');
+  }
+});
+
+/* ================================================================
+   INIT
+   ================================================================ */
+buildAllForms();
+renderPreview();
+updateTemplateTabs();
+
+// Auto-rebuild iframe on window resize
+let resizeTimeout;
+window.addEventListener('resize', ()=>{
+  clearTimeout(resizeTimeout);
+  resizeTimeout = setTimeout(renderPreview, 200);
+});
+</script>
+</body>
+</html>
